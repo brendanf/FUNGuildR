@@ -23,5 +23,6 @@ Imports:
    purrr,
    stringr,
    jsonlite,
-   tibble
+   tibble,
+   tidyr
 RoxygenNote: 6.1.1
