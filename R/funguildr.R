@@ -1,4 +1,5 @@
-#Based on Guilds_v1.1.py by Zewei Song
+# By Brendan Furneaux
+# Reimplementation of Guilds_v1.1.py by Zewei Song
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
