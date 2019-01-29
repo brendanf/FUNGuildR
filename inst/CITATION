@@ -1,0 +1,12 @@
+bibentry(bibtype="article",
+            title="FUNGuild: an open annotation tool for parsing fungal community datasets by ecological guild",
+            author=c("Nhu H Nguyen", "Zewei Song", "Scott T Bates",
+                     "Sara Branco", "Leho Tedersoo", "Jon Menke",
+                     "Jonathan S Schilling", "Peter G Kennedy"),
+            journal="Fungal Ecology",
+            volume="20",
+            pages="241--248",
+            year="2016",
+            publisher="Elsevier",
+         textVersion = "Nguyen NH, Song Z, Bates ST, Branco S, Tedersoo L, Menke J, Schilling JS, Kennedy PG. 2016. FUNGuild: An open annotation tool for parsing fungal community datasets by ecological guild. Fungal Ecology 20:241–248."
+         )
