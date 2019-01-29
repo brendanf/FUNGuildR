@@ -10,17 +10,21 @@ funguild_assign(otu_table, db = get_funguild_db())
 nemaguild_assign(otu_table, db = get_nemaguild_db())
 }
 \arguments{
-\item{otu_table}{A \link[base]{data.frame} with a \code{character} column named \code{Taxonomy}.
+\item{otu_table}{A \code{\link[base]{data.frame}} with a \code{character}
+column named \code{Taxonomy}, as well as any other columns.
 Each entry should be a comma-, colon- or semicolon-delimited classification
-of an organism, from higher-ranked to lower-ranked taxa.
-For example: \code{"Fungi;Dikarya;Basidiomycota;Agaricomycotina;Agaricomycetes;Agaricaceae;Agaricus;Agaricus bisporus"} (for the common cultivated mushroom).}
+of an organism.
+See \code{\link{sample_fungi}} and \code{\link{sample_nema}} for examples.
+A \code{character} vector, representing only the taxonomic classification,
+is also accepted.}
 
-\item{db}{A \link[base]{data.frame} representing the FUNGuild or NEMAGuild database,
-as returned by \link{get_funguild_db} or \link{get_nemaguild_db}.
+\item{db}{A \code{\link[base]{data.frame}} representing the FUNGuild or
+NEMAGuild database, as returned by \code{\link{get_funguild_db}} or
+\code{\link{get_nemaguild_db}}.
 If not supplied, the default database will be downloaded.}
 }
 \value{
-A \link[tibble]{tibble} containing the original \code{otu_table},
+A \code{\link[tibble]{tibble}} containing all columns of \code{otu_table},
 plus relevant columns of information from the FUNGuild or NEMAGuild database.
 }
 \description{
@@ -29,15 +33,23 @@ they download the database corresponding to their name by default.
 }
 \details{
 Taxa present in the database are matched to the taxa present in the supplied
-\code{otu_table} by exact name.  In the case of multiple matches, the lowest
-(most specific) rank is chosen.  No attempt is made to check or correct the
-classification in \code{otu_table}.
+\code{otu_table} by exact name.
+In the case of multiple matches, the lowest (most specific) rank is chosen.
+No attempt is made to check or correct the classification in
+\code{otu_table$Taxonomy}.
 }
 \examples{
-test_table <- tibble::tribble(~Common.Name, ~Taxonomy,
-                      "Button mushroom", "Agaricomycetes;Agaricales;Agaricaceae;Agaricus;Agaricus bisporus",
-                      "Chanterelle", "Agaricomycetes;Cantharellales;Cantharellaceae;Cantharellus;Cantharellus cibarius",
-                      "Death Cap", "Agaricomycetes;Agaricales;Amanitaceae;Amanita;Amanita phalloides",
-                      "Beer Yeast", "Saccharomycetes; Saccharomycetales;Saccharomycetaceae;Saccharomyces; Saccharomyces cerevesiae")
-funguild_assign(test_table)
+# sample input for nematodes
+sample_nema
+
+# nemaguild_testdb is a very small subset of the full database, use only
+# in this example!
+nemaguild_assign(sample_nema, db = nemaguild_testdb)
+
+# sample input for fungi
+sample_fungi
+
+# fungi_testdb is a very small subset of the full database,
+# use only iun this example!
+funguild_assign(sample_fungi, db = funguild_testdb)
 }

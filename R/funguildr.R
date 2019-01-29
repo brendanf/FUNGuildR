@@ -22,6 +22,10 @@ magrittr::`%>%`
 #' @export
 magrittr::`%<>%`
 
+#' @importFrom stats na.omit
+#' @export
+stats::na.omit
+
 #' Retrieve the FUNGuild or NEMAGuild database
 #'
 #' The two functions are exactly the same, but have different default values for the URL.
@@ -59,9 +63,10 @@ get_funguild_db <- function(db = 'http://www.stbates.org/funguild_db.php'){
                 }
                 purrr::flatten(current_record)
               }) %>%
-      dplyr::select(taxon, taxonomicLevel, trophicMode, guild, growthForm,
-             trait, confidenceRanking, notes, citationSource) %>%
-      dplyr::mutate(searchkey = paste0("@", stringr::str_replace(taxon, " ", "@"), "@"))
+      dplyr::select("taxon", "taxonomicLevel", "trophicMode", "guild",
+                    "growthForm", "trait", "confidenceRanking", "notes",
+                    "citationSource") %>%
+      dplyr::mutate(searchkey = paste0("@", stringr::str_replace(taxon, "[ _]", "@"), "@"))
   }
 
 #' @rdname  get_funguild_db
@@ -77,31 +82,47 @@ get_nemaguild_db <- function(db = 'http://www.stbates.org/nemaguild_db.php') {
 #' they download the database corresponding to their name by default.
 #'
 #' Taxa present in the database are matched to the taxa present in the supplied
-#' \code{otu_table} by exact name.  In the case of multiple matches, the lowest
-#' (most specific) rank is chosen.  No attempt is made to check or correct the
-#' classification in \code{otu_table}.
+#' \code{otu_table} by exact name.
+#' In the case of multiple matches, the lowest (most specific) rank is chosen.
+#' No attempt is made to check or correct the classification in
+#' \code{otu_table$Taxonomy}.
 #'
-#' @param otu_table A \link[base]{data.frame} with a \code{character} column named \code{Taxonomy}.
+#' @param otu_table A \code{\link[base]{data.frame}} with a \code{character}
+#' column named \code{Taxonomy}, as well as any other columns.
 #' Each entry should be a comma-, colon- or semicolon-delimited classification
-#' of an organism, from higher-ranked to lower-ranked taxa.
-#' For example: \code{"Fungi;Dikarya;Basidiomycota;Agaricomycotina;Agaricomycetes;Agaricaceae;Agaricus;Agaricus bisporus"} (for the common cultivated mushroom).
-#' @param db A \link[base]{data.frame} representing the FUNGuild or NEMAGuild database,
-#' as returned by \link{get_funguild_db} or \link{get_nemaguild_db}.
+#' of an organism.
+#' See \code{\link{sample_fungi}} and \code{\link{sample_nema}} for examples.
+#' A \code{character} vector, representing only the taxonomic classification,
+#' is also accepted.
+#'
+#' @param db A \code{\link[base]{data.frame}} representing the FUNGuild or
+#' NEMAGuild database, as returned by \code{\link{get_funguild_db}} or
+#' \code{\link{get_nemaguild_db}}.
 #' If not supplied, the default database will be downloaded.
 #'
-#' @return A \link[tibble]{tibble} containing the original \code{otu_table},
+#' @return A \code{\link[tibble]{tibble}} containing all columns of \code{otu_table},
 #' plus relevant columns of information from the FUNGuild or NEMAGuild database.
 #' @export
 #'
 #' @examples
-#' test_table <- tibble::tribble(~Common.Name, ~Taxonomy,
-#'                       "Button mushroom", "Agaricomycetes;Agaricales;Agaricaceae;Agaricus;Agaricus bisporus",
-#'                       "Chanterelle", "Agaricomycetes;Cantharellales;Cantharellaceae;Cantharellus;Cantharellus cibarius",
-#'                       "Death Cap", "Agaricomycetes;Agaricales;Amanitaceae;Amanita;Amanita phalloides",
-#'                       "Beer Yeast", "Saccharomycetes; Saccharomycetales;Saccharomycetaceae;Saccharomyces; Saccharomyces cerevesiae")
-#' funguild_assign(test_table)
+#' # sample input for nematodes
+#' sample_nema
+#'
+#' # nemaguild_testdb is a very small subset of the full database, use only
+#' # in this example!
+#' nemaguild_assign(sample_nema, db = nemaguild_testdb)
+#'
+#' # sample input for fungi
+#' sample_fungi
+#'
+#' # fungi_testdb is a very small subset of the full database,
+#' # use only iun this example!
+#' funguild_assign(sample_fungi, db = funguild_testdb)
 funguild_assign <- function (otu_table, db = get_funguild_db()) {
-  assertthat::assert_that(is.data.frame(otu_table) || tibble::is.tbl(otu_table),
+  if (is.character(otu_table)) {
+    otu_table <- tibble::tibble(Taxonomy = otu_table)
+  }
+  assertthat::assert_that(is.data.frame(otu_table) || dplyr::is.tbl(otu_table),
               "Taxonomy" %in% colnames(otu_table))
   otu_table$taxkey <- stringr::str_replace_all(otu_table$Taxonomy, "[_ ;,:]", "@") %>%
     paste0("@")
@@ -122,3 +143,18 @@ funguild_assign <- function (otu_table, db = get_funguild_db()) {
 nemaguild_assign <- function(otu_table, db = get_nemaguild_db()) {
    funguild_assign(otu_table, db)
 }
+
+#' Short Tables of Organisms, Used for Testing FUNGuild/NEMAGuild
+#'
+#' Each of these tables contains the common name (if any), scientific name, and
+#' taxonomic classification of a few organisms from their respective groups
+#' (e.g., Fungi or Nematoda). They provide an example of proper formatting for
+#' input to \code{\link{funguild_assign}} and \code{\link{nemaguild_assign}}.
+#'
+#' @format A \code{\link[tibble]{tibble}} with columns \code{Common.Name}, \code{Species}, and \code{Taxonomy}
+#'
+#' @source Taxonomy from \href{https://www.gbif.org/}{Global Biodiversity Inventory Facility} via \code{rgbif::\link[rgbif]{name_backbone}}.
+"sample_fungi"
+
+#' @rdname sample_fungi
+"sample_nema"

@@ -5,6 +5,7 @@
 \alias{reexports}
 \alias{\%>\%}
 \alias{\%<>\%}
+\alias{na.omit}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -13,5 +14,7 @@ below to see their documentation.
 
 \describe{
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}, \code{\link[magrittr]{\%<>\%}}}
+
+  \item{stats}{\code{\link[stats]{na.omit}}}
 }}
 
