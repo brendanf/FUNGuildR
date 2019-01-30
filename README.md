@@ -28,9 +28,9 @@ devtools::install_github("brendanf/FUNGuildR")
 The main functions are `funguild_assign()` and `nemaguild_assign()`.
 Each of these takes as their first argument a `data.frame`, which should
 contain a `character` column named “Taxonomy”. They return a version of
-the same `data.frame` (as a `tibble`) with additional columns
-“trophicMode”, “guild”, “growthForm”, “trait”, “confidenceRanking”,
-“notes”, and “citationSource”. That’s it\!
+the same `data.frame` (as a `tibble`) with additional columns “taxon”,
+“taxonomicLevel”, “trophicMode”, “guild”, “growthForm”, “trait”,
+“confidenceRanking”, “notes”, and “citationSource”. That’s it\!
 
 Here’s how it works on a sample database (scroll to see additional
 columns):
@@ -65,21 +65,21 @@ sample_guilds
 | Cryptococcus    | Cryptococcus neoformans  | Fungi;Basidiomycota;Tremellomycetes;Tremellales;Tremellaceae;Cryptococcus;Cryptococcus neoformans            | Cryptococcus\_neoformans  |             20 | Pathotroph  | Animal Pathogen        | Yeast                         | NULL                                                | Highly Probable   | Likely opportunistic human pathogen (Irinyi et al. 2015) | Kurtzman CP, et al. (eds.) 2011. The Yeasts, a Taxonomic Study. Fifth Edition. Vols 1-3. Elsevier, San Diego; Irinyi L, et al. 2015. Medical Mycology 53:313-337         |
 | Dung Cannon     | Pilobolus crystallinus   | Fungi;Zygomycota;Mucoromycetes;Mucorales;Pilobolaceae;Pilobolus;Pilobolus crystallinus                       | Pilobolus                 |             13 | Saprotroph  | Dung Saprotroph        | NULL                          | NULL                                                | Highly Probable   | NULL                                                     | Bell A. 1983. Dung Fungi: An Illustrated Guide to Coprophilous Fungi in New Zealand. Victoria University Press, Wellington; Tedersoo L, et al. 2014. Science 346:1256688 |
 
+For more information about the meaning of the new columns, see the
+FUNGuild manual, available at <https://github.com/UMNFuN/FUNGuild>.
+
 ## Import data format
 
 Each value in the Taxonomy column should consist of a comma-, colon-,
 underscore\_, or semicolon-delimited list of taxa which the organism on
-that row belongs to. For instance, for the common cultivated mushroom,
-*Agaricus
-    bisporus*:
-
-    Fungi;Basidiomycota;Agaricomycetes;Agaricales;Agaricaceae;Agaricus;Agaricus bisporus
+that row belongs to. You can see examples in the `sample_fungi` data
+presented above.
 
 Such taxonomic classifications are frequently arranged from the most
 inclusive taxon (e.g., Kingdom) to the most specific (e.g., Species),
-but this is not required. Not all taxonomic ranks are required; the
-algorithm returns results only for the most specific taxon which is
-present in the database.
+but this is not actually required. Not all taxonomic ranks are required;
+for each row, the algorithm returns results only for the most specific
+taxon which is present in the database.
 
 ## Database caching
 

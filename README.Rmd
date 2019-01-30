@@ -44,7 +44,7 @@ devtools::install_github("brendanf/FUNGuildR")
 
 The main functions are `funguild_assign()` and `nemaguild_assign()`.
 Each of these takes as their first argument a `data.frame`, which should contain a `character` column named "Taxonomy".
-They return a version of the same `data.frame` (as a `tibble`) with additional columns "trophicMode", "guild", "growthForm", "trait", "confidenceRanking", "notes", and "citationSource".
+They return a version of the same `data.frame` (as a `tibble`) with additional columns "taxon", "taxonomicLevel", "trophicMode", "guild", "growthForm", "trait", "confidenceRanking", "notes", and "citationSource".
 That's it!
 
 Here's how it works on a sample database (scroll to see additional columns):
@@ -55,16 +55,14 @@ sample_guilds <- funguild_assign(sample_fungi)
 sample_guilds
 ```
 
+For more information about the meaning of the new columns, see the FUNGuild manual, available at https://github.com/UMNFuN/FUNGuild.
+
 ## Import data format
 Each value in the Taxonomy column should consist of a comma-, colon-, underscore_, or semicolon-delimited list of taxa which the organism on that row belongs to.
-For instance, for the common cultivated mushroom, _Agaricus bisporus_:
+You can see examples in the `sample_fungi` data presented above.
 
-```
-Fungi;Basidiomycota;Agaricomycetes;Agaricales;Agaricaceae;Agaricus;Agaricus bisporus
-```
-
-Such taxonomic classifications are frequently arranged from the most inclusive taxon (e.g., Kingdom) to the most specific (e.g., Species), but this is not required.
-Not all taxonomic ranks are required; the algorithm returns results only for the most specific taxon which is present in the database.
+Such taxonomic classifications are frequently arranged from the most inclusive taxon (e.g., Kingdom) to the most specific (e.g., Species), but this is not actually required.
+Not all taxonomic ranks are required; for each row, the algorithm returns results only for the most specific taxon which is present in the database.
 
 ## Database caching
 
