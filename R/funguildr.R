@@ -136,6 +136,7 @@ funguild_assign <- function (otu_table, db = get_funguild_db()) {
     dplyr::arrange(dplyr::desc(taxonomicLevel)) %>%
     dplyr::summarize_at("searchkey", dplyr::first) %>%
     dplyr::ungroup() %>%
+    dplyr::mutate_all(as.character) %>%
     dplyr::left_join(otu_table, ., by = "taxkey") %>%
     dplyr::left_join(db, by = "searchkey", suffix = c("", ".funguild")) %>%
     dplyr::select(-taxkey, -searchkey)
