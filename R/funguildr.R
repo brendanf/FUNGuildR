@@ -122,7 +122,7 @@ funguild_assign <- function (otu_table, db = get_funguild_db()) {
   if (is.character(otu_table)) {
     otu_table <- tibble::tibble(Taxonomy = otu_table)
   }
-  assertthat::assert_that(is.data.frame(otu_table) || dplyr::is.tbl(otu_table),
+  assertthat::assert_that(is.data.frame(otu_table),
               "Taxonomy" %in% colnames(otu_table))
   otu_table$taxkey <- stringr::str_replace_all(otu_table$Taxonomy, "[_ ;,:]", "@") %>%
     paste0("@")
