@@ -39,6 +39,7 @@ stats::na.omit
 #' @examples
 #' get_funguild_db()
 get_funguild_db <- function(db = 'http://www.stbates.org/funguild_db.php'){
+  taxon <- NULL # pass R CMD check
     httr::GET(url = db) %>%
       httr::content(as = "text") %>%
       stringr::str_split("\n") %>%
@@ -127,6 +128,7 @@ funguild_assign <- function (otu_table, db = get_funguild_db()) {
   otu_table$taxkey <- stringr::str_replace_all(otu_table$Taxonomy, "[_ ;,:]", "@") %>%
     paste0("@")
   all_taxkey <- unique(otu_table$taxkey) %>% na.omit()
+  `.` <- taxon <- taxkey <- searchkey <- taxonomicLevel <- NULL # to pass R CMD check
   dplyr::select(db, taxonomicLevel, searchkey) %>%
     dplyr::mutate(taxkey = purrr::map(searchkey, stringr::str_subset, string = all_taxkey)) %>%
     tidyr::unnest() %>%
@@ -156,5 +158,16 @@ nemaguild_assign <- function(otu_table, db = get_nemaguild_db()) {
 #' @source Taxonomy from \href{https://www.gbif.org/}{Global Biodiversity Inventory Facility} via \code{rgbif::\link[rgbif]{name_backbone}}.
 "sample_fungi"
 
+
 #' @rdname sample_fungi
 "sample_nema"
+
+#' Short Extracts of the FUNGuild and NEMAGuild Databases
+#'
+#' These are used in the examples for \code{\link{funguild_assign}}/\code{\link{nemaguild_assign}};
+#' They are incomplete and should not be used for any purpose beyond testing.
+#'
+#' @source FUNGuild and NEMAGuild databases, http://www.stbates.org
+"funguild_testdb"
+#' @rdname funguild_testdb
+"nemaguild_testdb"
