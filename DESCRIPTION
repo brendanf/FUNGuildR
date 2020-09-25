@@ -29,5 +29,6 @@ Imports:
 Suggests:
     usethis,
     rgbif,
-    covr
+    covr,
+    testthat (>= 2.1.0)
 RoxygenNote: 7.0.2
