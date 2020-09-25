@@ -1,7 +1,7 @@
 Package: FUNGuildR
 Type: Package
 Title: Look Up Guild Information for Fungi and Nematodes
-Version: 0.1.0
+Version: 0.1.0.9999
 Author: Brendan Furneaux, Zewei Song (Python version)
 Maintainer: Brendan Furneaux <brendan.furneaux@gmail.com>
 Description: This is a simple reimplementation of FUNGuild_v1.1.py. It queries
@@ -29,4 +29,4 @@ Imports:
 Suggests:
    usethis,
    rgbif
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2

@@ -89,12 +89,15 @@ get_nemaguild_db <- function(db = 'http://www.stbates.org/nemaguild_db.php') {
 #' \code{otu_table$Taxonomy}.
 #'
 #' @param otu_table A \code{\link[base]{data.frame}} with a \code{character}
-#' column named \code{Taxonomy}, as well as any other columns.
-#' Each entry should be a comma-, colon- or semicolon-delimited classification
-#' of an organism.
+#' column named "\code{Taxonomy}" (or another name as specified in
+#' \code{tax_col}), as well as any other columns.
+#' Each entry in "\code{otu_table$Taxonomy}" should be a comma-, colon- or
+#' semicolon-delimited classification of an organism.
 #' See \code{\link{sample_fungi}} and \code{\link{sample_nema}} for examples.
 #' A \code{character} vector, representing only the taxonomic classification,
 #' is also accepted.
+#' @param tax_col A \code{character} string, optionally giving an alternate
+#' column name in \code{otu_table} to use instead of \code{otu_table$Taxonomy}.
 #'
 #' @param db A \code{\link[base]{data.frame}} representing the FUNGuild or
 #' NEMAGuild database, as returned by \code{\link{get_funguild_db}} or
@@ -119,13 +122,16 @@ get_nemaguild_db <- function(db = 'http://www.stbates.org/nemaguild_db.php') {
 #' # fungi_testdb is a very small subset of the full database,
 #' # use only in this example!
 #' funguild_assign(sample_fungi, db = funguild_testdb)
-funguild_assign <- function (otu_table, db = get_funguild_db()) {
+funguild_assign <- function(otu_table, db = get_funguild_db(),
+                            tax_col = "Taxonomy") {
   if (is.character(otu_table)) {
-    otu_table <- tibble::tibble(Taxonomy = otu_table)
+    otu_table <- tibble::tibble(otu_table)
+    names(otu_table) <- tax_col
   }
   assertthat::assert_that(is.data.frame(otu_table),
-              "Taxonomy" %in% colnames(otu_table))
-  otu_table$taxkey <- stringr::str_replace_all(otu_table$Taxonomy, "[_ ;,:]", "@") %>%
+                          tax_col %in% colnames(otu_table))
+  otu_table$taxkey <-
+    stringr::str_replace_all(otu_table[[tax_col]], "[_ ;,:]", "@") %>%
     paste0("@")
   all_taxkey <- unique(otu_table$taxkey) %>% na.omit()
   `.` <- taxon <- taxkey <- searchkey <- taxonomicLevel <- NULL # to pass R CMD check
@@ -145,8 +151,9 @@ funguild_assign <- function (otu_table, db = get_funguild_db()) {
 }
 #' @rdname funguild_assign
 #' @export
-nemaguild_assign <- function(otu_table, db = get_nemaguild_db()) {
-   funguild_assign(otu_table, db)
+nemaguild_assign <- function(otu_table, db = get_nemaguild_db(),
+                             tax_col = "Taxonomy") {
+  funguild_assign(otu_table, db, tax_col)
 }
 
 #' Short Tables of Organisms, Used for Testing FUNGuild/NEMAGuild

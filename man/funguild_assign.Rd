@@ -5,15 +5,16 @@
 \alias{nemaguild_assign}
 \title{Assign Guilds to Organisms Based on Taxonomic Classification}
 \usage{
-funguild_assign(otu_table, db = get_funguild_db())
+funguild_assign(otu_table, db = get_funguild_db(), tax_col = "Taxonomy")
 
-nemaguild_assign(otu_table, db = get_nemaguild_db())
+nemaguild_assign(otu_table, db = get_nemaguild_db(), tax_col = "Taxonomy")
 }
 \arguments{
 \item{otu_table}{A \code{\link[base]{data.frame}} with a \code{character}
-column named \code{Taxonomy}, as well as any other columns.
-Each entry should be a comma-, colon- or semicolon-delimited classification
-of an organism.
+column named "\code{Taxonomy}" (or another name as specified in
+\code{tax_col}), as well as any other columns.
+Each entry in "\code{otu_table$Taxonomy}" should be a comma-, colon- or
+semicolon-delimited classification of an organism.
 See \code{\link{sample_fungi}} and \code{\link{sample_nema}} for examples.
 A \code{character} vector, representing only the taxonomic classification,
 is also accepted.}
@@ -22,6 +23,9 @@ is also accepted.}
 NEMAGuild database, as returned by \code{\link{get_funguild_db}} or
 \code{\link{get_nemaguild_db}}.
 If not supplied, the default database will be downloaded.}
+
+\item{tax_col}{A \code{character} string, optionally giving an alternate
+column name in \code{otu_table} to use instead of \code{otu_table$Taxonomy}.}
 }
 \value{
 A \code{\link[tibble]{tibble}} containing all columns of \code{otu_table},
@@ -50,6 +54,6 @@ nemaguild_assign(sample_nema, db = nemaguild_testdb)
 sample_fungi
 
 # fungi_testdb is a very small subset of the full database,
-# use only iun this example!
+# use only in this example!
 funguild_assign(sample_fungi, db = funguild_testdb)
 }
