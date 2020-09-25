@@ -117,7 +117,7 @@ get_nemaguild_db <- function(db = 'http://www.stbates.org/nemaguild_db.php') {
 #' sample_fungi
 #'
 #' # fungi_testdb is a very small subset of the full database,
-#' # use only iun this example!
+#' # use only in this example!
 #' funguild_assign(sample_fungi, db = funguild_testdb)
 funguild_assign <- function (otu_table, db = get_funguild_db()) {
   if (is.character(otu_table)) {
@@ -130,8 +130,10 @@ funguild_assign <- function (otu_table, db = get_funguild_db()) {
   all_taxkey <- unique(otu_table$taxkey) %>% na.omit()
   `.` <- taxon <- taxkey <- searchkey <- taxonomicLevel <- NULL # to pass R CMD check
   dplyr::select(db, taxonomicLevel, searchkey) %>%
-    dplyr::mutate(taxkey = purrr::map(searchkey, stringr::str_subset, string = all_taxkey)) %>%
-    tidyr::unnest() %>%
+    dplyr::mutate(
+      taxkey = purrr::map(searchkey, stringr::str_subset, string = all_taxkey)
+    ) %>%
+    tidyr::unnest(cols = taxkey) %>%
     dplyr::group_by(taxkey) %>%
     dplyr::arrange(dplyr::desc(taxonomicLevel)) %>%
     dplyr::summarize_at("searchkey", dplyr::first) %>%
