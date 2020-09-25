@@ -22,6 +22,11 @@ library("FUNGuildR")
 ```
 # FUNGuildR
 
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.com/brendanf/FUNGuildR.svg?branch=master)](https://travis-ci.com/brendanf/FUNGuildR)
+[![Codecov test coverage](https://codecov.io/gh/brendanf/FUNGuildR/branch/master/graph/badge.svg)](https://codecov.io/gh/brendanf/FUNGuildR?branch=master)
+<!-- badges: end -->
+
 This is a simple reimplementation of FUNGuild_v1.1.py. It queries
 the [FUNGuild or NEMAGuild databases](http://www.stbates.org/guilds/app.php)
 and assigns trait information based on matching to a taxonomic
