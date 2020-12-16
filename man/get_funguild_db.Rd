@@ -5,7 +5,7 @@
 \alias{get_nemaguild_db}
 \title{Retrieve the FUNGuild or NEMAGuild database}
 \usage{
-get_funguild_db(db = "http://www.stbates.org/funguild_db.php")
+get_funguild_db(db = "http://www.stbates.org/funguild_db_2.php")
 
 get_nemaguild_db(db = "http://www.stbates.org/nemaguild_db.php")
 }

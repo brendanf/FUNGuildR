@@ -5,7 +5,11 @@
 \alias{sample_fungi}
 \alias{sample_nema}
 \title{Short Tables of Organisms, Used for Testing FUNGuild/NEMAGuild}
-\format{A \code{\link[tibble]{tibble}} with columns \code{Common.Name}, \code{Species}, and \code{Taxonomy}}
+\format{
+A \code{\link[tibble]{tibble}} with columns \code{Common.Name}, \code{Species}, and \code{Taxonomy}
+
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 5 rows and 3 columns.
+}
 \source{
 Taxonomy from \href{https://www.gbif.org/}{Global Biodiversity Inventory Facility} via \code{rgbif::\link[rgbif]{name_backbone}}.
 }

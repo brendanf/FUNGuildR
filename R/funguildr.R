@@ -38,7 +38,7 @@ stats::na.omit
 #'
 #' @examples
 #' get_funguild_db()
-get_funguild_db <- function(db = 'http://www.stbates.org/funguild_db.php'){
+get_funguild_db <- function(db = 'http://www.stbates.org/funguild_db_2.php'){
   taxon <- NULL # pass R CMD check
     httr::GET(url = db) %>%
       httr::content(as = "text") %>%
@@ -47,7 +47,7 @@ get_funguild_db <- function(db = 'http://www.stbates.org/funguild_db.php'){
       magrittr::extract(7) %>%
       stringr::str_replace("^\\[", "") %>%
       stringr::str_replace("]</body>$", "") %>%
-      stringr::str_replace_all("\\} , \\{", "} \n {") %>%
+      stringr::str_replace_all("\\} ?, ?\\{", "} \n {") %>%
       stringr::str_split("\n") %>%
       unlist %>%
       purrr::map_dfr(function(record) {

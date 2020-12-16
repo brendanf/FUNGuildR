@@ -5,7 +5,11 @@
 \alias{funguild_testdb}
 \alias{nemaguild_testdb}
 \title{Short Extracts of the FUNGuild and NEMAGuild Databases}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 51 rows and 10 columns.}
+\format{
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 51 rows and 10 columns.
+
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 22 rows and 10 columns.
+}
 \source{
 FUNGuild and NEMAGuild databases, http://www.stbates.org
 }
