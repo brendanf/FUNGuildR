@@ -1,4 +1,4 @@
-# FUNGuildR 0.1.0.9999
+# FUNGuildR 0.2.0
 
 * Update default FUNGuild URL to use new version of FUNguild database (as
   in `Guilds_v1.1.py`) and correctly parse new database format.
