@@ -57,7 +57,7 @@ get_funguild_db <- function(db = 'http://www.stbates.org/funguild_db_2.php'){
                     stringr::str_replace(current_record$taxon, " ", "_")
                 }
                 if (!is.null(current_record[["TrophicMode"]])) {
-                  current_record$trophicMode <- current_record$trophicMode
+                  current_record$trophicMode <- current_record$TrophicMode
                 }
                 if (!is.null(current_record[["growthMorphology"]])) {
                   current_record$growthForm <- current_record$growthMorphology
