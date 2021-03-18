@@ -22,6 +22,12 @@ test_that("funguild_assign accepts a character vector", {
   )
 })
 
+test_that("get_funguild_db works", {
+  testthat::skip_if_offline(host = "www.stbates.org")
+  assignment <- funguild_assign(sample_fungi)
+  expect_is(assignment, "tbl_df")
+})
+
 sample2 <- sample_fungi
 sample2$Taxonomy <- chartr(";", ",", sample2$Taxonomy)
 test_that("funguild_assign accepts a comma delimited tax column", {
