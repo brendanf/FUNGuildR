@@ -9,6 +9,8 @@
   older versions will not work with new cached databases.
 * Species names in the *taxon* column of `funguild_assign()` output now have a
   space instead of an underscore between the genus and species epithets.
+* Added function `funguild_query()` to submit queries to the FUNGuild web API.
+  It also works with a locally cached database.
 
 # FUNGuildR 0.2.0
 

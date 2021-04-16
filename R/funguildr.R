@@ -17,6 +17,7 @@
 #' @importFrom magrittr "%>%"
 #' @importFrom magrittr "%<>%"
 #' @importFrom stats na.omit
+#' @importFrom dplyr .data
 NULL
 
 #' Retrieve the FUNGuild or NEMAGuild database
@@ -152,6 +153,59 @@ funguild_assign <- function(otu_table, db = get_funguild_db(),
 nemaguild_assign <- function(otu_table, db = get_nemaguild_db(),
                              tax_col = "Taxonomy") {
   funguild_assign(otu_table, db, tax_col)
+}
+
+#' Return entries in the FUNGuild database which match search terms
+#'
+#' @param text A `character` string giving the text to search for. The "`%`" and
+#'     "`*`" characters can be used as wildcards.
+#' @param field A `character` string giving the field of the database to search
+#'     for the query `text`. Should be one of `c("taxon", "guid", "mbNumber",
+#'     "trophicMode", "guild", "growthForm", "trait")`.
+#' @param db Either a `character` string giving the base URL of the FUNGuild
+#'     web API, or a `data.frame` containing a cached copy of the database,
+#'     as returned by [get_funguild_db()].
+#'
+#' @return A [`tibble::tibble`] containing all the entried from the database
+#'     which match the query.
+#' @export
+#'
+#' @examples
+#'
+#' funguild_query("Symbiotroph", "trophicMode", funguild_testdb)
+funguild_query <- function(
+  text,
+  field = c("taxon", "guid", "mbNumber", "trophicMode", "guild", "growthForm",
+            "trait"),
+  db = "https://mycoportal.org/fdex/services/api/db_return.php"
+) {
+  assertthat::assert_that(assertthat::is.string(text))
+  field <- match.arg(field)
+  if (is.data.frame(db)) return(funguild_query_local(text, field, db))
+  assertthat::assert_that(assertthat::is.string(db))
+  # if (file.exists(db)) return(funguild_query_file(text, field, db))
+  response <- httr::GET(db, query = list(qField = field, qText = text))
+  httr::warn_for_status(response)
+  assertthat::assert_that(
+    startsWith(response$headers$`content-type`, "application/json"),
+    msg = sprintf(
+      "URL '%s' gave an invalid response of type '%s'.",
+      db,
+      response$headers$`content-type`
+    )
+  )
+  purrr::map_dfr(httr::content(response), tibble::as_tibble)
+}
+
+funguild_query_local <- function(text, field, db) {
+  # function isn't exported, so arguments have already been checked
+
+  # the query accepts * and % as wildcards. convert to regex equivalent
+  text <- gsub("*", ".*", text, fixed = TRUE)
+  text <- gsub("%", ".*", text, fixed = TRUE)
+  # anchor beginning and end of query
+  text <- sprintf("^%s$", text)
+  dplyr::filter(db, grepl(text, .data[[field]]))
 }
 
 #' Short Tables of Organisms, Used for Testing FUNGuild/NEMAGuild
