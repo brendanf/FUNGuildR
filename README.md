@@ -10,8 +10,8 @@
 coverage](https://codecov.io/gh/brendanf/FUNGuildR/branch/master/graph/badge.svg)](https://codecov.io/gh/brendanf/FUNGuildR?branch=master)
 <!-- badges: end -->
 
-`FUNGuildR` is a tool for assigns trait information based on matching to
-a taxonomic classification, using the [FUNGuild
+`FUNGuildR` is a tool for assigning trait information based on matching
+to a taxonomic classification, using the [FUNGuild
 database](http://www.funguild.org). In normal use, the database is
 queried for each use, because FUNGuild are continually updated as new
 information is submitted. However, `FUNGuildR` also includes functions
