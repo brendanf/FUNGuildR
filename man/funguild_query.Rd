@@ -32,3 +32,9 @@ Return entries in the FUNGuild database which match search terms
 
 funguild_query("Symbiotroph", "trophicMode", funguild_testdb)
 }
+\references{
+Nguyen NH, Song Z, Bates ST, Branco S, Tedersoo L, Menke J,
+Schilling JS, Kennedy PG. 2016. \emph{FUNGuild: An open annotation tool for
+parsing fungal community datasets by ecological guild}. Fungal Ecology
+20:241–248.
+}

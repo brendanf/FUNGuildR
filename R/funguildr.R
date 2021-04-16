@@ -35,6 +35,10 @@ NULL
 #'
 #' @examples
 #' get_funguild_db()
+#' @references Nguyen NH, Song Z, Bates ST, Branco S, Tedersoo L, Menke J,
+#' Schilling JS, Kennedy PG. 2016. *FUNGuild: An open annotation tool for
+#' parsing fungal community datasets by ecological guild*. Fungal Ecology
+#' 20:241–248.
 get_funguild_db <- function(db = 'http://www.stbates.org/funguild_db_2.php'){
   taxon <- NULL # pass R CMD check
     httr::GET(url = db) %>%
@@ -117,6 +121,10 @@ get_nemaguild_db <- function(db = 'http://www.stbates.org/nemaguild_db.php') {
 #' # fungi_testdb is a very small subset of the full database,
 #' # use only in this example!
 #' funguild_assign(sample_fungi, db = funguild_testdb)
+#' @references Nguyen NH, Song Z, Bates ST, Branco S, Tedersoo L, Menke J,
+#' Schilling JS, Kennedy PG. 2016. *FUNGuild: An open annotation tool for
+#' parsing fungal community datasets by ecological guild*. Fungal Ecology
+#' 20:241–248.
 funguild_assign <- function(otu_table, db = get_funguild_db(),
                             tax_col = "Taxonomy") {
   if (is.character(otu_table)) {
@@ -173,6 +181,10 @@ nemaguild_assign <- function(otu_table, db = get_nemaguild_db(),
 #' @examples
 #'
 #' funguild_query("Symbiotroph", "trophicMode", funguild_testdb)
+#' @references Nguyen NH, Song Z, Bates ST, Branco S, Tedersoo L, Menke J,
+#' Schilling JS, Kennedy PG. 2016. *FUNGuild: An open annotation tool for
+#' parsing fungal community datasets by ecological guild*. Fungal Ecology
+#' 20:241–248.
 funguild_query <- function(
   text,
   field = c("taxon", "guid", "mbNumber", "trophicMode", "guild", "growthForm",
@@ -230,6 +242,10 @@ funguild_query_local <- function(text, field, db) {
 #' They are incomplete and should not be used for any purpose beyond testing.
 #'
 #' @source FUNGuild and NEMAGuild databases, <http://www.stbates.org>.
+#' @references Nguyen NH, Song Z, Bates ST, Branco S, Tedersoo L, Menke J,
+#' Schilling JS, Kennedy PG. 2016. *FUNGuild: An open annotation tool for
+#' parsing fungal community datasets by ecological guild*. Fungal Ecology
+#' 20:241–248.
 "funguild_testdb"
 #' @rdname funguild_testdb
 "nemaguild_testdb"

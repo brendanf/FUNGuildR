@@ -22,4 +22,10 @@ nemaguild_testdb
 These are used in the examples for \code{\link[=funguild_assign]{funguild_assign()}}/\code{\link[=nemaguild_assign]{nemaguild_assign()}};
 They are incomplete and should not be used for any purpose beyond testing.
 }
+\references{
+Nguyen NH, Song Z, Bates ST, Branco S, Tedersoo L, Menke J,
+Schilling JS, Kennedy PG. 2016. \emph{FUNGuild: An open annotation tool for
+parsing fungal community datasets by ecological guild}. Fungal Ecology
+20:241–248.
+}
 \keyword{datasets}
