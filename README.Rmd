@@ -27,19 +27,20 @@ library("FUNGuildR")
 [![Codecov test coverage](https://codecov.io/gh/brendanf/FUNGuildR/branch/master/graph/badge.svg)](https://codecov.io/gh/brendanf/FUNGuildR?branch=master)
 <!-- badges: end -->
 
-This is a simple reimplementation of FUNGuild_v1.1.py. It queries
-the [FUNGuild database](http://www.funguild.org)
-and assigns trait information based on matching to a taxonomic
-classification. It does not include a copy of the FUNGuild or NEMAGuild
-databases, because they are continually updated as new information is
-submitted, but it does have methods to download them and store them as R
-objects to speed up repeated queries or to allow local queries without
-internet access.
+`FUNGuildR` is a tool for assigns trait information based on matching to a
+taxonomic classification, using the
+[FUNGuild database](http://www.funguild.org). In normal use, the database is
+queried for each use, because FUNGuild are continually updated as new
+information is submitted.  However, `FUNGuildR` also includes functions to
+download the database and store it as an R object to speed up repeated queries,
+make queries reproducible over time, and allow local queries without internet
+access.
 
 ## Installation
 
 For the moment, `FUNGuildR` can only be installed from GitHub.
-To install, be sure you have installed the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) package, and then type
+To install, be sure you have installed the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) package,
+and then type:
 
 ``` r
 devtools::install_github("brendanf/FUNGuildR")
@@ -47,12 +48,35 @@ devtools::install_github("brendanf/FUNGuildR")
 
 ## Usage
 
-The main functions are `funguild_assign()` and `nemaguild_assign()`.
-Each of these takes as their first argument a `data.frame`, which should contain a `character` column named "Taxonomy".
-They return a version of the same `data.frame` (as a `tibble`) with additional columns "taxon", "taxonomicLevel", "trophicMode", "guild", "growthForm", "trait", "confidenceRanking", "notes", and "citationSource".
+The main functions is `funguild_assign()`.
+It takes as its only required argument a `data.frame`, which should contain
+a `character` column named "Taxonomy".
+It returns a version of the same `data.frame` (as a `tibble`) with additional
+columns:
+
+**taxon**: The name of the matched taxon.  
+**guid**: [Globally Unique Identifier](http://guid.one/guid) for the database
+record.  
+**mbNumber**: The [MycoBank](https://www.mycobank.org) number of the taxon.  
+**taxonomicLevel**: A numeric representation of the taxonomic rank; higher
+numbers are lower ranks.  
+**trophicMode**: A very general overview of how the organism gets its nutrition;
+one or more of *Saprotroph*, *Pathotroph*, and *Symbiotroph*.  
+**guild**: One or more narrower categories for how the organism gets its
+nutrition.  
+**confidenceRanking**: The confidence level of the guild assignment; *Possible*,
+*Probable*, or *Highly Probable*.  
+**growthForm**: The general growth morphology of the organism (or its fruiting
+body). Multiple values may be given.  
+**trait**: Additional traits about the organism, such as wood decay type or
+toxicity.  
+**note**: Additional notes about the entry.  
+**citationSource**: Citation(s) for the information about the taxon.
+
 That's it!
 
 Here's how it works on a sample database (scroll to see additional columns):
+
 ```{r}
 sample_fungi
 
@@ -60,36 +84,58 @@ sample_guilds <- funguild_assign(sample_fungi)
 sample_guilds
 ```
 
-For more information about the meaning of the new columns, see the FUNGuild manual, available at https://github.com/UMNFuN/FUNGuild.
+For more information about the meaning of the new columns, see the [FUNGuild manual](https://github.com/UMNFuN/FUNGuild/blob/master/FUNGuild_Manual.pdf).
 
-## Import data format
-Each value in the Taxonomy column should consist of a comma-, colon-, underscore_, or semicolon-delimited list of taxa which the organism on that row belongs to.
+## Input data format
+
+Each value in the *Taxonomy* column of the input `data.frame` should consist of
+a comma-, colon-, underscore-, or semicolon-delimited list of taxa which the
+organism on that row belongs to.
 You can see examples in the `sample_fungi` data presented above.
 
-Such taxonomic classifications are frequently arranged from the most inclusive taxon (e.g., Kingdom) to the most specific (e.g., Species), but this is not actually required.
-Not all taxonomic ranks are required; for each row, the algorithm returns results only for the most specific taxon which is present in the database.
+Such taxonomic classifications are frequently arranged from the most inclusive
+taxon (e.g., Kingdom) to the least inclusive taxon (e.g., Species), but this
+is not actually required for FUNGuild.
+Not all taxonomic ranks are required; for each row, the algorithm returns
+results only for the least inclusive taxon which is present in the database.
 
 ## Database caching
 
-By default, `funguild_assign()` and `nemaguild_assign()` download the appropriate database each time they are invoked.
-In many analysis pipelines, where guilds need to be assigned only once, this is not a problem; because the databases are continuously updated, it is good to use the most current version.
-However, if you are going to call the functions many times, or if you plan to assign guilds in a situation where you have no internet access, you can cache the database(s) locally using the functions `get_funguild_db()` and `get_nemaguild_db()`.
-Each of these returns the relevant database as a `tibble`, which can be passed as the second argument to `funguild_assign()` or `nemaguild_assign()`.
+By default, `funguild_assign()` downloads the
+FUNGuild database each time they are invoked.
+In many analysis workflows, where guilds need to be assigned only once, this is
+not a problem; because the databases are continuously updated, it is good to
+use the most current version.
+However, if you are going to call the functions many times, or if you plan to
+assign guilds in a situation where you have no internet access, you can cache
+the database(s) locally using the functions `get_funguild_db()`.
+This returns the database as a `tibble`, which can be passed
+as a second argument to `funguild_assign()`.
 
 ```r
-nema <- get_nemaguild_db()
+fung <- get_funguild_db()
 
 # This isn't necessary for a single query, but it works.
-nema_guild <- nemaguild_assign(sample_nema, db = nema)
+fung_guilds <- funguild_assign(sample_fungi, db = fung)
 
 # It might be more useful in this situation
-data_guilds <- lapply(many_datasets, nemaguild_assign, db = nema)
+data_guilds <- lapply(many_datasets, funguild_assign, db = fung)
 
 # Or you can save it for later offline use
-saveRDS(nema, "nemaguild.rds")
+saveRDS(fung, "funguild.rds")
 
 #And then load it again
-nema <- loadRDS("nemaguild.rds")
+fung <- loadRDS("funguild.rds")
 ```
 
-This strategy can also be used for reproduceable research, to store the same version of the database which was used in the original paper.
+This strategy can also be used for reproduceable research, to store the same
+version of the database which was used in the original analysis.
+
+## NEMAGuild
+
+As of April 2021, the NEMAGuild database is temporarily offline. However,
+`FUNGuildR` has functions `nemaguild_assign()` and `get_nemaguild_db()` to
+access it in exactly the same ways as the FUNGuild database. These functions
+will not work for the time being (unless you already have a cached copy of
+NEMAGuild!) but they should work again when NEMAGuild is back online.
+database.

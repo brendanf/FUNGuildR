@@ -1,5 +1,7 @@
 # FUNGuildR (development version)
 
+* NEMAGuild is (temporarily?) offline.
+
 # FUNGuildR 0.2.0
 
 * Update default FUNGuild URL to use new version of FUNguild database (as
