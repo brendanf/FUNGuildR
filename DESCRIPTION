@@ -1,16 +1,17 @@
 Package: FUNGuildR
 Type: Package
-Title: Look Up Guild Information for Fungi and Nematodes
+Title: Look Up Guild Information for Fungi
 Version: 0.2.0.9000
 Authors@R: c(person("Brendan", "Furneaux", role = c("aut", "trl", "cre"), email = "brendan.furneaux@gmail.com", comment = c(ORCID="0000-0003-3522-7363")), person("Zewei", "Song", role = "ctb", comment = "(Python version)"))
 Maintainer: Brendan Furneaux <brendan.furneaux@gmail.com>
 Description: A tool for assigning trait information based on matching to a
-  taxonomic classification, using the FUNGuild database
-  (<http://www.funguild.org>). In normal use, the database is queried for each
-  use, because FUNGuild are continually updated as new information is submitted.
-  However, FUNGuildR also includes functions to download the database and store
-  it as an R object to speed up repeated queries, make queries reproducible over
-  time, and allow local queries without internet access.
+  taxonomic classification, using the FUNGuild database (Nguyen et al. 2016;
+  <doi:10.1016/j.funeco.2015.06.006>). In normal use, the database is queried
+  for each function call, because FUNGuild is continually updated as new
+  information is submitted. However, FUNGuildR also includes functions to
+  download the database and store it as an R object to speed up repeated
+  queries, make queries reproducible over time, and allow local queries without
+  internet access.
 URL: http://www.funguild.org, http://github.com/brendanf/FUNGuildR
 BugReports: http://github.com/brendanf/FUNGuildR/issues
 License: GPL-3
