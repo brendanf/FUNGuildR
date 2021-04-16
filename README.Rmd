@@ -28,7 +28,7 @@ library("FUNGuildR")
 <!-- badges: end -->
 
 This is a simple reimplementation of FUNGuild_v1.1.py. It queries
-the [FUNGuild or NEMAGuild databases](http://www.stbates.org/guilds/app.php)
+the [FUNGuild database](http://www.funguild.org)
 and assigns trait information based on matching to a taxonomic
 classification. It does not include a copy of the FUNGuild or NEMAGuild
 databases, because they are continually updated as new information is
