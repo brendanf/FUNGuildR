@@ -46,9 +46,9 @@ and then type:
 devtools::install_github("brendanf/FUNGuildR")
 ```
 
-## Usage
+## Guild assignment
 
-The main functions is `funguild_assign()`.
+The main function is `funguild_assign()`.
 It takes as its only required argument a `data.frame`, which should contain
 a `character` column named "Taxonomy".
 It returns a version of the same `data.frame` (as a `tibble`) with additional
@@ -86,7 +86,7 @@ sample_guilds
 
 For more information about the meaning of the new columns, see the [FUNGuild manual](https://github.com/UMNFuN/FUNGuild/blob/master/FUNGuild_Manual.pdf).
 
-## Input data format
+### Input data format
 
 Each value in the *Taxonomy* column of the input `data.frame` should consist of
 a comma-, colon-, underscore-, or semicolon-delimited list of taxa which the
@@ -99,7 +99,7 @@ is not actually required for FUNGuild.
 Not all taxonomic ranks are required; for each row, the algorithm returns
 results only for the least inclusive taxon which is present in the database.
 
-## Database caching
+### Database caching
 
 By default, `funguild_assign()` downloads the
 FUNGuild database each time they are invoked.
@@ -131,11 +131,43 @@ fung <- loadRDS("funguild.rds")
 This strategy can also be used for reproduceable research, to store the same
 version of the database which was used in the original analysis.
 
+## Database queries
+
+From the current development version, `FUNGuildR` also allows queries to the
+FUNGuild web API. The fields *taxon*, *guid*, *mbNumber*, *trophicMode*,
+*guild*, *growthForm*, and *trait* are searchable.  For instance, to find all
+fungi annotated as causing brown rot (a kind of wood decay):
+
+```{r}
+brownrotters <- funguild_query("brown rot", "trait")
+nrow(brownrotters)
+```
+
+Here are the first few:
+```{r}
+head(brownrotters)
+```
+
+The characters "`%`" and "`*`" can be used as wildcards.  For instance, we can
+search for all fungi where the wood decay type is listed:
+
+```{r}
+allrotters <- funguild_query("* rot", "trait")
+nrow(allrotters)
+unique(allrotters$trait)
+```
+
+Queries can also be run against a locally cached database.
+
+```r
+fungi <- get_funguild_database()
+allrotters <- funguild_query("* rot", "trait", db = fungi)
+```
+
 ## NEMAGuild
 
 As of April 2021, the NEMAGuild database is temporarily offline. However,
 `FUNGuildR` has functions `nemaguild_assign()` and `get_nemaguild_db()` to
 access it in exactly the same ways as the FUNGuild database. These functions
-will not work for the time being (unless you already have a cached copy of
+will not work for the time being (unless you already have a cached local copy of
 NEMAGuild!) but they should work again when NEMAGuild is back online.
-database.

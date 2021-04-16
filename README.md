@@ -30,9 +30,9 @@ then type:
 devtools::install_github("brendanf/FUNGuildR")
 ```
 
-## Usage
+## Guild assignment
 
-The main functions is `funguild_assign()`. It takes as its only required
+The main function is `funguild_assign()`. It takes as its only required
 argument a `data.frame`, which should contain a `character` column named
 “Taxonomy”. It returns a version of the same `data.frame` (as a
 `tibble`) with additional columns:
@@ -97,7 +97,7 @@ For more information about the meaning of the new columns, see the
 [FUNGuild
 manual](https://github.com/UMNFuN/FUNGuild/blob/master/FUNGuild_Manual.pdf).
 
-## Input data format
+### Input data format
 
 Each value in the *Taxonomy* column of the input `data.frame` should
 consist of a comma-, colon-, underscore-, or semicolon-delimited list of
@@ -111,7 +111,7 @@ taxonomic ranks are required; for each row, the algorithm returns
 results only for the least inclusive taxon which is present in the
 database.
 
-## Database caching
+### Database caching
 
 By default, `funguild_assign()` downloads the FUNGuild database each
 time they are invoked. In many analysis workflows, where guilds need to
@@ -142,11 +142,59 @@ fung <- loadRDS("funguild.rds")
 This strategy can also be used for reproduceable research, to store the
 same version of the database which was used in the original analysis.
 
+## Database queries
+
+From the current development version, `FUNGuildR` also allows queries to
+the FUNGuild web API. The fields *taxon*, *guid*, *mbNumber*,
+*trophicMode*, *guild*, *growthForm*, and *trait* are searchable. For
+instance, to find all fungi annotated as causing brown rot (a kind of
+wood decay):
+
+``` r
+brownrotters <- funguild_query("brown rot", "trait")
+nrow(brownrotters)
+#> [1] 87
+```
+
+Here are the first few:
+
+``` r
+head(brownrotters)
+```
+
+| taxon             | guid                                 | mbNumber | taxonomicLevel | trophicMode | guild                | confidenceRanking | growthForm | trait     | notes | citationSource                                                                                          |
+| :---------------- | :----------------------------------- | :------- | :------------- | :---------- | :------------------- | :---------------- | :--------- | :-------- | :---- | :------------------------------------------------------------------------------------------------------ |
+| Amylocorticiellum | 01898B69-3447-4EAC-B250-646F4B3D5CF8 | 28664    | 13             | Saprotroph  | Undefined Saprotroph | Probable          | Corticioid | Brown Rot | NULL  | Tedersoo L, et al. 2014. Science 346:e1256688 ((<https://doi.org/10.1126/science.1256688>))             |
+| Amylocorticium    | 1CB1C472-36B9-11D5-9548-00D0592D548C | 17064    | 13             | Saprotroph  | Undefined Saprotroph | Probable          | NULL       | Brown Rot | NULL  | Tedersoo L, et al. 2014. Science 346:e1256688 ((<https://doi.org/10.1126/science.1256688>))             |
+| Amylosporus       | 1CB1C475-36B9-11D5-9548-00D0592D548C | 17072    | 13             | Saprotroph  | Wood Saprotroph      | Highly Probable   | Polyporoid | Brown Rot | NULL  | Gilbertson RL, Ryvarden L. 1987-1987. North American Polypores. Fungiflora, Oslo (ISBN: 978-0945345060) |
+| Anomoporia        | 1CB1C482-36B9-11D5-9548-00D0592D548C | 17080    | 13             | Saprotroph  | Wood Saprotroph      | Highly Probable   | Corticioid | Brown Rot | NULL  | Gilbertson RL, Ryvarden L. 1987-1987. North American Polypores. Fungiflora, Oslo (ISBN: 978-0945345060) |
+| Antrodia          | 1CB17DB2-36B9-11D5-9548-00D0592D548C | 17083    | 13             | Saprotroph  | Wood Saprotroph      | Highly Probable   | Corticioid | Brown Rot | NULL  | Gilbertson RL, Ryvarden L. 1987-1987. North American Polypores. Fungiflora, Oslo (ISBN: 978-0945345060) |
+| Aquascypha        | AF14A5C8-C759-41D9-8B08-9E6061DBB9A3 | 17092    | 13             | Saprotroph  | NULL                 | Probable          | NULL       | Brown Rot | NULL  | Tedersoo L, et al. 2014. Science 346:e1256688 ((<https://doi.org/10.1126/science.1256688>))             |
+
+The characters “`%`” and “`*`” can be used as wildcards. For instance,
+we can search for all fungi where the wood decay type is listed:
+
+``` r
+allrotters <- funguild_query("* rot", "trait")
+nrow(allrotters)
+#> [1] 633
+unique(allrotters$trait)
+#> [1] "White Rot"            "Soft Rot"             "Brown Rot; White Rot"
+#> [4] "Brown Rot"            "Brown Rot-White Rot"
+```
+
+Queries can also be run against a locally cached database.
+
+``` r
+fungi <- get_funguild_database()
+allrotters <- funguild_query("* rot", "trait", db = fungi)
+```
+
 ## NEMAGuild
 
 As of April 2021, the NEMAGuild database is temporarily offline.
 However, `FUNGuildR` has functions `nemaguild_assign()` and
 `get_nemaguild_db()` to access it in exactly the same ways as the
 FUNGuild database. These functions will not work for the time being
-(unless you already have a cached copy of NEMAGuild\!) but they should
-work again when NEMAGuild is back online. database.
+(unless you already have a cached local copy of NEMAGuild\!) but they
+should work again when NEMAGuild is back online.
