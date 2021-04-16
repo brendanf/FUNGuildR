@@ -15,16 +15,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #' @importFrom magrittr "%>%"
-#' @export
-magrittr::`%>%`
-
 #' @importFrom magrittr "%<>%"
-#' @export
-magrittr::`%<>%`
-
 #' @importFrom stats na.omit
-#' @export
-stats::na.omit
+NULL
 
 #' Retrieve the FUNGuild or NEMAGuild database
 #'
