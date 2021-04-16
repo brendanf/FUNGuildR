@@ -3,6 +3,12 @@
 * NEMAGuild is (temporarily?) offline.
 * `funguild_assign()` and `get_funguild_db()` now return additional columns
   "guid" and "mbNumber" from the new version of FUNGuild
+* `get_funguild_db()` now returns the database as-is, without changing spaces to
+  underscores in the species name, or adding the search key. The current
+  `funguild_assign()` should still work with old locally cached databases, but
+  older versions will not work with new cached databases.
+* Species names in the *taxon* column of `funguild_assign()` output now have a
+  space instead of an underscore between the genus and species epithets.
 
 # FUNGuildR 0.2.0
 

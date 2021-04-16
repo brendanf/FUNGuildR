@@ -46,24 +46,21 @@ get_funguild_db <- function(db = 'http://www.stbates.org/funguild_db_2.php'){
       stringr::str_replace_all("\\} ?, ?\\{", "} \n {") %>%
       stringr::str_split("\n") %>%
       unlist %>%
-      purrr::map_dfr(function(record) {
-                current_record <- jsonlite::fromJSON(record)
-                if (current_record$taxonomicLevel == 20) {
-                  current_record$taxon <-
-                    stringr::str_replace(current_record$taxon, " ", "_")
-                }
-                if (!is.null(current_record[["TrophicMode"]])) {
-                  current_record$trophicMode <- current_record$TrophicMode
-                }
-                if (!is.null(current_record[["growthMorphology"]])) {
-                  current_record$growthForm <- current_record$growthMorphology
-                }
-                purrr::flatten(current_record)
-              }) %>%
+      purrr::map_dfr(
+        function(record) {
+          current_record <- jsonlite::fromJSON(record)
+          if (!is.null(current_record[["TrophicMode"]])) {
+            current_record$trophicMode <- current_record$TrophicMode
+          }
+          if (!is.null(current_record[["growthMorphology"]])) {
+            current_record$growthForm <- current_record$growthMorphology
+          }
+          purrr::flatten(current_record)
+        }
+      ) %>%
       dplyr::select("taxon", "guid", "mbNumber", "taxonomicLevel", "trophicMode",
                     "guild", "confidenceRanking", "growthForm", "trait", "notes",
-                    "citationSource") %>%
-      dplyr::mutate(searchkey = paste0("@", stringr::str_replace(taxon, "[ _]", "@"), "@"))
+                    "citationSource")
   }
 
 #' @rdname  get_funguild_db
@@ -132,6 +129,10 @@ funguild_assign <- function(otu_table, db = get_funguild_db(),
     paste0("@")
   all_taxkey <- unique(otu_table$taxkey) %>% na.omit()
   `.` <- taxon <- taxkey <- searchkey <- taxonomicLevel <- NULL # to pass R CMD check
+  db <- dplyr::mutate(
+    db,
+    searchkey = paste0("@", stringr::str_replace(taxon, "[ _]", "@"), "@")
+  )
   dplyr::select(db, taxonomicLevel, searchkey) %>%
     dplyr::mutate(
       taxkey = purrr::map(searchkey, stringr::str_subset, string = all_taxkey)
