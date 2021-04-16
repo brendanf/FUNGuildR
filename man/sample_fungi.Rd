@@ -6,12 +6,12 @@
 \alias{sample_nema}
 \title{Short Tables of Organisms, Used for Testing FUNGuild/NEMAGuild}
 \format{
-A \code{\link[tibble]{tibble}} with columns \code{Common.Name}, \code{Species}, and \code{Taxonomy}
+A \code{\link[tibble:tibble]{tibble::tibble}} with columns \code{Common.Name}, \code{Species}, and \code{Taxonomy}
 
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 5 rows and 3 columns.
 }
 \source{
-Taxonomy from \href{https://www.gbif.org/}{Global Biodiversity Inventory Facility} via \code{rgbif::\link[rgbif]{name_backbone}}.
+Taxonomy from \href{https://www.gbif.org/}{Global Biodiversity Inventory Facility} via \code{\link[rgbif:name_backbone]{rgbif::name_backbone()}}.
 }
 \usage{
 sample_fungi
@@ -22,6 +22,6 @@ sample_nema
 Each of these tables contains the common name (if any), scientific name, and
 taxonomic classification of a few organisms from their respective groups
 (e.g., Fungi or Nematoda). They provide an example of proper formatting for
-input to \code{\link{funguild_assign}} and \code{\link{nemaguild_assign}}.
+input to \code{\link[=funguild_assign]{funguild_assign()}} and \code{\link[=nemaguild_assign]{nemaguild_assign()}}.
 }
 \keyword{datasets}

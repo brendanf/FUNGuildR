@@ -27,9 +27,9 @@ NULL
 #' @param db a length 1 character string giving the URL to retrieve the database
 #'     from
 #'
-#' @return a \link[tibble]{tibble} containing the database, which can be passed
-#'     to the \code{db} argument of \link{funguild_assign} and
-#'     \link{nemaguild_assign}
+#' @return a [`tibble::tibble`] containing the database, which can be passed
+#'     to the `db` argument of [funguild_assign()] and
+#'     [nemaguild_assign()]
 #' @export
 #'
 #' @examples
@@ -79,29 +79,29 @@ get_nemaguild_db <- function(db = 'http://www.stbates.org/nemaguild_db.php') {
 #' they download the database corresponding to their name by default.
 #'
 #' Taxa present in the database are matched to the taxa present in the supplied
-#' \code{otu_table} by exact name.
+#' `otu_table` by exact name.
 #' In the case of multiple matches, the lowest (most specific) rank is chosen.
 #' No attempt is made to check or correct the classification in
-#' \code{otu_table$Taxonomy}.
+#' `otu_table$Taxonomy`.
 #'
-#' @param otu_table A \code{\link[base]{data.frame}} with a \code{character}
-#' column named "\code{Taxonomy}" (or another name as specified in
-#' \code{tax_col}), as well as any other columns.
-#' Each entry in "\code{otu_table$Taxonomy}" should be a comma-, colon-,
+#' @param otu_table A `data.frame` with a `character`
+#' column named "`Taxonomy`" (or another name as specified in
+#' `tax_col`), as well as any other columns.
+#' Each entry in "`otu_table$Taxonomy`" should be a comma-, colon-,
 #' underscore-, or semicolon-delimited classification of an organism.
-#' See \code{\link{sample_fungi}} and \code{\link{sample_nema}} for examples.
-#' A \code{character} vector, representing only the taxonomic classification,
+#' See [`sample_fungi`] and [`sample_nema`] for examples.
+#' A `character` vector, representing only the taxonomic classification,
 #' is also accepted.
-#' @param tax_col A \code{character} string, optionally giving an alternate
-#' column name in \code{otu_table} to use instead of \code{otu_table$Taxonomy}.
+#' @param tax_col A `character` string, optionally giving an alternate
+#' column name in `otu_table` to use instead of `otu_table$Taxonomy`.
 #'
-#' @param db A \code{\link[base]{data.frame}} representing the FUNGuild or
-#' NEMAGuild database, as returned by \code{\link{get_funguild_db}} or
-#' \code{\link{get_nemaguild_db}}.
+#' @param db A `data.frame` representing the FUNGuild or
+#' NEMAGuild database, as returned by [get_funguild_db()] or
+#' [get_nemaguild_db()].
 #' If not supplied, the default database will be downloaded.
 #'
-#' @return A \code{\link[tibble]{tibble}} containing all columns of
-#' \code{otu_table}, plus relevant columns of information from the FUNGuild or
+#' @return A [`tibble::tibble`] containing all columns of
+#' `otu_table`, plus relevant columns of information from the FUNGuild or
 #' NEMAGuild database.
 #' @export
 #'
@@ -158,11 +158,11 @@ nemaguild_assign <- function(otu_table, db = get_nemaguild_db(),
 #' Each of these tables contains the common name (if any), scientific name, and
 #' taxonomic classification of a few organisms from their respective groups
 #' (e.g., Fungi or Nematoda). They provide an example of proper formatting for
-#' input to \code{\link{funguild_assign}} and \code{\link{nemaguild_assign}}.
+#' input to [funguild_assign()] and [nemaguild_assign()].
 #'
-#' @format A \code{\link[tibble]{tibble}} with columns \code{Common.Name}, \code{Species}, and \code{Taxonomy}
+#' @format A [`tibble::tibble`] with columns `Common.Name`, `Species`, and `Taxonomy`
 #'
-#' @source Taxonomy from \href{https://www.gbif.org/}{Global Biodiversity Inventory Facility} via \code{rgbif::\link[rgbif]{name_backbone}}.
+#' @source Taxonomy from [Global Biodiversity Inventory Facility](https://www.gbif.org/) via [rgbif::name_backbone()].
 "sample_fungi"
 
 
@@ -171,10 +171,10 @@ nemaguild_assign <- function(otu_table, db = get_nemaguild_db(),
 
 #' Short Extracts of the FUNGuild and NEMAGuild Databases
 #'
-#' These are used in the examples for \code{\link{funguild_assign}}/\code{\link{nemaguild_assign}};
+#' These are used in the examples for [funguild_assign()]/[nemaguild_assign()];
 #' They are incomplete and should not be used for any purpose beyond testing.
 #'
-#' @source FUNGuild and NEMAGuild databases, \url{http://www.stbates.org}
+#' @source FUNGuild and NEMAGuild databases, <http://www.stbates.org>.
 "funguild_testdb"
 #' @rdname funguild_testdb
 "nemaguild_testdb"

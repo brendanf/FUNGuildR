@@ -14,9 +14,9 @@ get_nemaguild_db(db = "http://www.stbates.org/nemaguild_db.php")
 from}
 }
 \value{
-a \link[tibble]{tibble} containing the database, which can be passed
-    to the \code{db} argument of \link{funguild_assign} and
-    \link{nemaguild_assign}
+a \code{\link[tibble:tibble]{tibble::tibble}} containing the database, which can be passed
+to the \code{db} argument of \code{\link[=funguild_assign]{funguild_assign()}} and
+\code{\link[=nemaguild_assign]{nemaguild_assign()}}
 }
 \description{
 The two functions are exactly the same, but have different default values

@@ -11,7 +11,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 22 rows and 10 columns.
 }
 \source{
-FUNGuild and NEMAGuild databases, http://www.stbates.org
+FUNGuild and NEMAGuild databases, \url{http://www.stbates.org}.
 }
 \usage{
 funguild_testdb
@@ -19,7 +19,7 @@ funguild_testdb
 nemaguild_testdb
 }
 \description{
-These are used in the examples for \code{\link{funguild_assign}}/\code{\link{nemaguild_assign}};
+These are used in the examples for \code{\link[=funguild_assign]{funguild_assign()}}/\code{\link[=nemaguild_assign]{nemaguild_assign()}};
 They are incomplete and should not be used for any purpose beyond testing.
 }
 \keyword{datasets}
