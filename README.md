@@ -23,8 +23,8 @@ queries without internet access.
 
 For the moment, `FUNGuildR` can only be installed from GitHub. To
 install, be sure you have installed the
-[devtools](https://cran.r-project.org/web/packages/devtools/index.html)
-package, and then type:
+[devtools](https://CRAN.R-project.org/package=devtools) package, and
+then type:
 
 ``` r
 devtools::install_github("brendanf/FUNGuildR")

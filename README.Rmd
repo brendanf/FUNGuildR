@@ -39,7 +39,7 @@ access.
 ## Installation
 
 For the moment, `FUNGuildR` can only be installed from GitHub.
-To install, be sure you have installed the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) package,
+To install, be sure you have installed the [devtools](https://CRAN.R-project.org/package=devtools) package,
 and then type:
 
 ``` r

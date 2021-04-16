@@ -6,7 +6,7 @@ Authors@R: c(person("Brendan", "Furneaux", role = c("aut", "trl", "cre"), email 
 Maintainer: Brendan Furneaux <brendan.furneaux@gmail.com>
 Description: A tool for assigning trait information based on matching to a
   taxonomic classification, using the FUNGuild database
-  (http://www.funguild.org). In normal use, the database is queried for each
+  (<http://www.funguild.org>). In normal use, the database is queried for each
   use, because FUNGuild are continually updated as new information is submitted.
   However, FUNGuildR also includes functions to download the database and store
   it as an R object to speed up repeated queries, make queries reproducible over
