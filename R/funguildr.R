@@ -60,8 +60,8 @@ get_funguild_db <- function(db = 'http://www.stbates.org/funguild_db_2.php'){
                 }
                 purrr::flatten(current_record)
               }) %>%
-      dplyr::select("taxon", "taxonomicLevel", "trophicMode", "guild",
-                    "growthForm", "trait", "confidenceRanking", "notes",
+      dplyr::select("taxon", "guid", "mbNumber", "taxonomicLevel", "trophicMode",
+                    "guild", "confidenceRanking", "growthForm", "trait", "notes",
                     "citationSource") %>%
       dplyr::mutate(searchkey = paste0("@", stringr::str_replace(taxon, "[ _]", "@"), "@"))
   }

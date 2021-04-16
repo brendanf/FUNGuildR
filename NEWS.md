@@ -1,6 +1,8 @@
 # FUNGuildR (development version)
 
 * NEMAGuild is (temporarily?) offline.
+* `funguild_assign()` and `get_funguild_db()` now return additional columns
+  "guid" and "mbNumber" from the new version of FUNGuild
 
 # FUNGuildR 0.2.0
 
