@@ -10,14 +10,17 @@ get_funguild_db(db = "http://www.stbates.org/funguild_db_2.php")
 get_nemaguild_db(db = "http://www.stbates.org/nemaguild_db.php")
 }
 \arguments{
-\item{db}{a length 1 character string giving the URL to retrieve the database from}
+\item{db}{a length 1 character string giving the URL to retrieve the database
+from}
 }
 \value{
-a \link[tibble]{tibble} containing the database, which can be passed to the \code{db}
-argument of \link{funguild_assign} and \link{nemaguild_assign}
+a \link[tibble]{tibble} containing the database, which can be passed
+    to the \code{db} argument of \link{funguild_assign} and
+    \link{nemaguild_assign}
 }
 \description{
-The two functions are exactly the same, but have different default values for the URL.
+The two functions are exactly the same, but have different default values
+for the URL.
 }
 \examples{
 get_funguild_db()

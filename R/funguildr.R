@@ -21,12 +21,15 @@ NULL
 
 #' Retrieve the FUNGuild or NEMAGuild database
 #'
-#' The two functions are exactly the same, but have different default values for the URL.
+#' The two functions are exactly the same, but have different default values
+#' for the URL.
 #'
-#' @param db a length 1 character string giving the URL to retrieve the database from
+#' @param db a length 1 character string giving the URL to retrieve the database
+#'     from
 #'
-#' @return a \link[tibble]{tibble} containing the database, which can be passed to the \code{db}
-#' argument of \link{funguild_assign} and \link{nemaguild_assign}
+#' @return a \link[tibble]{tibble} containing the database, which can be passed
+#'     to the \code{db} argument of \link{funguild_assign} and
+#'     \link{nemaguild_assign}
 #' @export
 #'
 #' @examples
@@ -84,8 +87,8 @@ get_nemaguild_db <- function(db = 'http://www.stbates.org/nemaguild_db.php') {
 #' @param otu_table A \code{\link[base]{data.frame}} with a \code{character}
 #' column named "\code{Taxonomy}" (or another name as specified in
 #' \code{tax_col}), as well as any other columns.
-#' Each entry in "\code{otu_table$Taxonomy}" should be a comma-, colon- or
-#' semicolon-delimited classification of an organism.
+#' Each entry in "\code{otu_table$Taxonomy}" should be a comma-, colon-,
+#' underscore-, or semicolon-delimited classification of an organism.
 #' See \code{\link{sample_fungi}} and \code{\link{sample_nema}} for examples.
 #' A \code{character} vector, representing only the taxonomic classification,
 #' is also accepted.
@@ -97,8 +100,9 @@ get_nemaguild_db <- function(db = 'http://www.stbates.org/nemaguild_db.php') {
 #' \code{\link{get_nemaguild_db}}.
 #' If not supplied, the default database will be downloaded.
 #'
-#' @return A \code{\link[tibble]{tibble}} containing all columns of \code{otu_table},
-#' plus relevant columns of information from the FUNGuild or NEMAGuild database.
+#' @return A \code{\link[tibble]{tibble}} containing all columns of
+#' \code{otu_table}, plus relevant columns of information from the FUNGuild or
+#' NEMAGuild database.
 #' @export
 #'
 #' @examples
@@ -170,7 +174,7 @@ nemaguild_assign <- function(otu_table, db = get_nemaguild_db(),
 #' These are used in the examples for \code{\link{funguild_assign}}/\code{\link{nemaguild_assign}};
 #' They are incomplete and should not be used for any purpose beyond testing.
 #'
-#' @source FUNGuild and NEMAGuild databases, http://www.stbates.org
+#' @source FUNGuild and NEMAGuild databases, \url{http://www.stbates.org}
 "funguild_testdb"
 #' @rdname funguild_testdb
 "nemaguild_testdb"
