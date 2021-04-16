@@ -1,8 +1,8 @@
 Package: FUNGuildR
 Type: Package
 Title: Look Up Guild Information for Fungi and Nematodes
-Version: 0.2.0
-Author: Brendan Furneaux, Zewei Song (Python version)
+Version: 0.2.0.9000
+Authors@R: c(person("Brendan", "Furneaux", role = c("aut", "trl", "cre"), email = "brendan.furneaux@gmail.com", comment = c(ORCID="0000-0003-3522-7363")), person("Zewei", "Song", role = "ctb", comment = "(Python version)"))
 Maintainer: Brendan Furneaux <brendan.furneaux@gmail.com>
 Description: This is a simple reimplementation of FUNGuild_v1.1.py. It queries
     the FUNGuild or NEMAGuild databases (http://www.stbates.org/guilds/app.php)
@@ -31,4 +31,4 @@ Suggests:
     rgbif,
     covr,
     testthat (>= 2.1.0)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
