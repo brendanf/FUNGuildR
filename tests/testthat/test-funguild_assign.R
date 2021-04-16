@@ -43,10 +43,10 @@ test_that("direct assignment and stored db give same results", {
 
 test_that("direct query and stored db give same results", {
   testthat::skip_if_offline(host = "www.mycoportal.org")
-  result_online <- funguild_query("Ectomycorrhizal*", "guild")
+  result_online <- funguild_query("ectomycorrhizal*", "guild")
   testthat::skip_if_not(file.exists(dbfile))
   db <- readRDS(dbfile)
-  result_local <- funguild_query("Ectomycorrhizal*", "guild", db = db)
+  result_local <- funguild_query("ectomycorrhizal*", "guild", db = db)
   expect_identical(result_local, result_online)
 })
 

@@ -205,7 +205,7 @@ funguild_query_local <- function(text, field, db) {
   text <- gsub("%", ".*", text, fixed = TRUE)
   # anchor beginning and end of query
   text <- sprintf("^%s$", text)
-  dplyr::filter(db, grepl(text, .data[[field]]))
+  dplyr::filter(db, grepl(text, .data[[field]], ignore.case = TRUE))
 }
 
 #' Short Tables of Organisms, Used for Testing FUNGuild/NEMAGuild
