@@ -196,17 +196,10 @@ funguild_query <- function(
   if (is.data.frame(db)) return(funguild_query_local(text, field, db))
   assertthat::assert_that(assertthat::is.string(db))
   # if (file.exists(db)) return(funguild_query_file(text, field, db))
-  response <- httr::GET(db, query = list(qField = field, qText = text))
-  httr::warn_for_status(response)
-  assertthat::assert_that(
-    startsWith(response$headers$`content-type`, "application/json"),
-    msg = sprintf(
-      "URL '%s' gave an invalid response of type '%s'.",
-      db,
-      response$headers$`content-type`
-    )
-  )
-  purrr::map_dfr(httr::content(response), tibble::as_tibble)
+  httr::GET(db, query = list(qField = field, qText = text)) %>%
+    check_is_json() %>%
+    httr::content() %>%
+    purrr::map_dfr(tibble::as_tibble)
 }
 
 funguild_query_local <- function(text, field, db) {
