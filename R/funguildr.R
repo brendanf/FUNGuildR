@@ -91,6 +91,8 @@ get_nemaguild_db <- function(db = 'http://www.stbates.org/nemaguild_db.php') {
 #' `tax_col`), as well as any other columns.
 #' Each entry in "`otu_table$Taxonomy`" should be a comma-, colon-,
 #' underscore-, or semicolon-delimited classification of an organism.
+#' Rank indicators as given by Sintax ("`k:`", "`p:`"...) or Unite ("`k__`,
+#' "`p__`", ...) are also allowed.
 #' See [`sample_fungi`] and [`sample_nema`] for examples.
 #' A `character` vector, representing only the taxonomic classification,
 #' is also accepted.
@@ -134,7 +136,8 @@ funguild_assign <- function(otu_table, db = get_funguild_db(),
   assertthat::assert_that(is.data.frame(otu_table),
                           tax_col %in% colnames(otu_table))
   otu_table$taxkey <-
-    stringr::str_replace_all(otu_table[[tax_col]], "[_ ;,:]", "@") %>%
+    stringr::str_replace_all(otu_table[[tax_col]], "\\b[kpcofgs](:|__)", "") %>%
+    stringr::str_replace_all("[_ ;,:]", "@") %>%
     paste0("@")
   all_taxkey <- unique(otu_table$taxkey) %>% na.omit()
   `.` <- taxon <- taxkey <- searchkey <- taxonomicLevel <- NULL # to pass R CMD check
@@ -189,7 +192,7 @@ funguild_query <- function(
   text,
   field = c("taxon", "guid", "mbNumber", "trophicMode", "guild", "growthForm",
             "trait"),
-  db = "https://mycoportal.org/fdex/services/api/db_return.php"
+  db = "https://mycoportal.org/funguild/services/api/db_return.php"
 ) {
   assertthat::assert_that(assertthat::is.string(text))
   field <- match.arg(field)

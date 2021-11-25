@@ -11,6 +11,8 @@
   space instead of an underscore between the genus and species epithets.
 * Added function `funguild_query()` to submit queries to the FUNGuild web API.
   It also works with a locally cached database.
+* `funguild_assign()` now accepts Sintax ("`k:`", "`p:`"...) or Unite ("`k__`,
+  "`p__`", ...) style taxonomy strings.
 
 # FUNGuildR 0.2.0
 

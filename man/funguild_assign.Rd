@@ -15,6 +15,8 @@ column named "\code{Taxonomy}" (or another name as specified in
 \code{tax_col}), as well as any other columns.
 Each entry in "\code{otu_table$Taxonomy}" should be a comma-, colon-,
 underscore-, or semicolon-delimited classification of an organism.
+Rank indicators as given by Sintax ("\verb{k:}", "\verb{p:}"...) or Unite ("\code{k__},
+"\code{p__}", ...) are also allowed.
 See \code{\link{sample_fungi}} and \code{\link{sample_nema}} for examples.
 A \code{character} vector, representing only the taxonomic classification,
 is also accepted.}

@@ -78,13 +78,45 @@ test_that("funguild_assign accepts a nonstandard taxonomy column", {
   )
 })
 
-
-
-names(sample2)[3] <- "classification"
 test_that("funguild_assign accepts a nonstandard taxonomy column in a character", {
   expect_known_value(
     funguild_assign(sample_fungi$Taxonomy, db = funguild_testdb, tax_col = "tax"),
     file = "funguild_tax_col_char",
     update = FALSE
+  )
+})
+
+rankabbrevs <- c("k", "p", "c", "o", "f", "g", "s")
+reformat <- sample_fungi %>%
+  tidyr::separate(Taxonomy, into = rankabbrevs, sep = ";") %>%
+  tidyr::pivot_longer(
+    cols = !!rankabbrevs,
+    names_to = "rank",
+    values_to = "taxon"
+  ) %>%
+  dplyr::group_by_all() %>%
+  dplyr::ungroup(rank, taxon)
+reformat_sintax <- reformat %>%
+  dplyr::summarize(Taxonomy = paste(rank, taxon, sep = ":", collapse = ",")) %>%
+  dplyr::left_join(dplyr::select(sample_fungi, Common.Name, Species), .)
+reformat_unite <- reformat %>%
+  dplyr::summarize(Taxonomy = paste(rank, taxon, sep = "__", collapse = ";")) %>%
+  dplyr::left_join(dplyr::select(sample_fungi, Common.Name, Species), .)
+
+test_that("sintax-style taxonomy works", {
+  expect_equal(
+    funguild_assign(sample_fungi$Taxonomy, db = funguild_testdb) %>%
+      dplyr::select(-"Taxonomy"),
+    funguild_assign(reformat_sintax$Taxonomy, db = funguild_testdb) %>%
+      dplyr::select(-"Taxonomy")
+  )
+})
+
+test_that("unite-style taxonomy works", {
+  expect_equal(
+    funguild_assign(sample_fungi$Taxonomy, db = funguild_testdb) %>%
+      dplyr::select(-"Taxonomy"),
+    funguild_assign(reformat_unite$Taxonomy, db = funguild_testdb) %>%
+      dplyr::select(-"Taxonomy")
   )
 })
