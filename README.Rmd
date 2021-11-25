@@ -92,6 +92,8 @@ Each value in the *Taxonomy* column of the input `data.frame` should consist of
 a comma-, colon-, underscore-, or semicolon-delimited list of taxa which the
 organism on that row belongs to.
 You can see examples in the `sample_fungi` data presented above.
+Taxonomy strings which include taxonomic rank indicators in the styles used by
+Sintax ("`k:`", "`p:`"...) or Unite ("`k__`, "`p__`", ...) are also accepted.
 
 Such taxonomic classifications are frequently arranged from the most inclusive
 taxon (e.g., Kingdom) to the least inclusive taxon (e.g., Species), but this
