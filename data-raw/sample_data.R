@@ -1,26 +1,24 @@
 # subsample of the nemaguild database
 nemaguild_testdb <- get_nemaguild_db() %>%
-  dplyr::filter(
-    grepl(paste0("(Caenorhabditis|",
-                 "Trichinella|",
-                 "Necator|",
-                 "Xiphinema|",
-                 "Turbatrix)"),
-    taxon
-  ))
+   dplyr::filter(
+      stringr::str_detect(taxon,
+                          paste0("(Caenorhabditis|",
+                                 "Trichinella|",
+                                 "Necator|",
+                                 "Xiphinema|",
+                                 "Turbatrix)")))
 usethis::use_data(nemaguild_testdb, overwrite = TRUE)
 
 # subsample of the funguild database
 funguild_testdb <- get_funguild_db() %>%
-  dplyr::filter(grepl(paste0("(Agaricus|",
-                             "Amanita|",
-                             "Saccharomyces|",
-                             "Rhizophagus|",
-                             "Serpula|",
-                             "Cryptococcus|",
-                             "Pilobolus)"),
-                      taxon
-  ))
+   dplyr::filter(stringr::str_detect(taxon,
+                                     paste0("(Agaricus|",
+                                     "Amanita|",
+                                     "Saccharomyces|",
+                                     "Rhizophagus|",
+                                     "Serpula|",
+                                     "Cryptococcus|",
+                                     "Pilobolus)")))
 usethis::use_data(funguild_testdb, overwrite = TRUE)
 
 sample_fungi <-

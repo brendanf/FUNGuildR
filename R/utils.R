@@ -25,8 +25,3 @@ check_is_json <- function(response) {
   )
   response
 }
-
-# simple replacement for stringr::str_subset
-str_subset <- function(string, pattern, ...) {
-  string[grepl(pattern, string, ...)]
-}
