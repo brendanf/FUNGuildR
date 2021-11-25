@@ -18,7 +18,7 @@
 #' @importFrom magrittr "%<>%"
 #' @importFrom stats na.omit
 #' @importFrom dplyr .data
-NULL
+if(getRversion() >= "2.15.1") utils::globalVariables(c("."))
 
 #' Retrieve the FUNGuild or NEMAGuild database
 #'
@@ -43,13 +43,13 @@ get_funguild_db <- function(db = 'http://www.stbates.org/funguild_db_2.php'){
   taxon <- NULL # pass R CMD check
     httr::GET(url = db) %>%
       httr::content(as = "text") %>%
-      stringr::str_split("\n") %>%
+      strsplit("\n") %>%
       unlist %>%
       magrittr::extract(7) %>%
-      stringr::str_replace("^\\[", "") %>%
-      stringr::str_replace("]</body>$", "") %>%
-      stringr::str_replace_all("\\} ?, ?\\{", "} \n {") %>%
-      stringr::str_split("\n") %>%
+      sub("^\\[", "", .) %>%
+      sub("]</body>$", "", .) %>%
+      gsub("\\} ?, ?\\{", "} \n {", .) %>%
+      strsplit("\n") %>%
       unlist %>%
       purrr::map_dfr(
         function(record) {
@@ -136,18 +136,18 @@ funguild_assign <- function(otu_table, db = get_funguild_db(),
   assertthat::assert_that(is.data.frame(otu_table),
                           tax_col %in% colnames(otu_table))
   otu_table$taxkey <-
-    stringr::str_replace_all(otu_table[[tax_col]], "\\b[kpcofgs](:|__)", "") %>%
-    stringr::str_replace_all("[_ ;,:]", "@") %>%
+    gsub("\\b[kpcofgs](:|__)", "", otu_table[[tax_col]]) %>%
+    gsub("[_ ;,:]", "@", .) %>%
     paste0("@")
   all_taxkey <- unique(otu_table$taxkey) %>% na.omit()
   `.` <- taxon <- taxkey <- searchkey <- taxonomicLevel <- NULL # to pass R CMD check
   db <- dplyr::mutate(
     db,
-    searchkey = paste0("@", stringr::str_replace(taxon, "[ _]", "@"), "@")
+    searchkey = paste0("@", sub("[ _]", "@", taxon), "@")
   )
   dplyr::select(db, taxonomicLevel, searchkey) %>%
     dplyr::mutate(
-      taxkey = purrr::map(searchkey, stringr::str_subset, string = all_taxkey)
+      taxkey = purrr::map(searchkey, str_subset, string = all_taxkey)
     ) %>%
     tidyr::unnest(cols = taxkey) %>%
     dplyr::group_by(taxkey) %>%

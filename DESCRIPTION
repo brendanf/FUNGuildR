@@ -24,7 +24,6 @@ Imports:
    magrittr,
    httr,
    purrr (>= 0.2.3),
-   stringr,
    jsonlite,
    tibble,
    tidyr

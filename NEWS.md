@@ -13,6 +13,7 @@
   It also works with a locally cached database.
 * `funguild_assign()` now accepts Sintax ("`k:`", "`p:`"...) or Unite ("`k__`,
   "`p__`", ...) style taxonomy strings.
+* Removed dependency on `stringr`.
 
 # FUNGuildR 0.2.0
 
