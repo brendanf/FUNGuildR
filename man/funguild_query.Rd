@@ -7,7 +7,7 @@
 funguild_query(
   text,
   field = c("taxon", "guid", "mbNumber", "trophicMode", "guild", "growthForm", "trait"),
-  db = "https://mycoportal.org/fdex/services/api/db_return.php"
+  db = "https://mycoportal.org/funguild/services/api/db_return.php"
 )
 }
 \arguments{
