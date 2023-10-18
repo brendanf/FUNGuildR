@@ -23,7 +23,7 @@ library("FUNGuildR")
 # FUNGuildR
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/brendanf/FUNGuildR/workflows/R-CMD-check/badge.svg)](https://github.com/brendanf/FUNGuildR/actions)
+[![R-CMD-check](https://github.com/brendanf/FUNGuildR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/brendanf/FUNGuildR/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/brendanf/FUNGuildR/branch/master/graph/badge.svg)](https://codecov.io/gh/brendanf/FUNGuildR?branch=master)
 <!-- badges: end -->
 

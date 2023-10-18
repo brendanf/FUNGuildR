@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/brendanf/FUNGuildR/workflows/R-CMD-check/badge.svg)](https://github.com/brendanf/FUNGuildR/actions)
+[![R-CMD-check](https://github.com/brendanf/FUNGuildR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/brendanf/FUNGuildR/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/brendanf/FUNGuildR/branch/master/graph/badge.svg)](https://codecov.io/gh/brendanf/FUNGuildR?branch=master)
 <!-- badges: end -->
@@ -78,6 +78,7 @@ sample_fungi
 | Dung Cannon     | Pilobolus crystallinus   | Fungi;Zygomycota;Mucoromycetes;Mucorales;Pilobolaceae;Pilobolus;Pilobolus crystallinus                       |
 
 ``` r
+
 sample_guilds <- funguild_assign(sample_fungi)
 sample_guilds
 ```
@@ -103,7 +104,7 @@ consist of a comma-, colon-, underscore-, or semicolon-delimited list of
 taxa which the organism on that row belongs to. You can see examples in
 the `sample_fungi` data presented above. Taxonomy strings which include
 taxonomic rank indicators in the styles used by Sintax (“`k:`”, “`p:`”…)
-or Unite (“`k__`,”`p__`", …) are also accepted.
+or Unite (“`k__`,”`p__`“, …) are also accepted.
 
 Such taxonomic classifications are frequently arranged from the most
 inclusive taxon (e.g., Kingdom) to the least inclusive taxon (e.g.,
@@ -154,7 +155,7 @@ wood decay):
 ``` r
 brownrotters <- funguild_query("brown rot", "trait")
 nrow(brownrotters)
-#> [1] 91
+#> [1] 93
 ```
 
 Here are the first few:
@@ -167,10 +168,10 @@ head(brownrotters)
 |:------------------|:-------------------------------------|:---------|:---------------|:------------|:---------------------|:------------------|:-----------|:----------|:------|:--------------------------------------------------------------------------------------------------------|
 | Amylocorticiellum | 01898B69-3447-4EAC-B250-646F4B3D5CF8 | 28664    | 13             | Saprotroph  | Undefined Saprotroph | Probable          | Corticioid | Brown Rot | NULL  | Tedersoo L, et al. 2014. Science 346:e1256688 ((<https://doi.org/10.1126/science.1256688>))             |
 | Amylocorticium    | 1CB1C472-36B9-11D5-9548-00D0592D548C | 17064    | 13             | Saprotroph  | Undefined Saprotroph | Probable          | NULL       | Brown Rot | NULL  | Tedersoo L, et al. 2014. Science 346:e1256688 ((<https://doi.org/10.1126/science.1256688>))             |
+| Amylocystis       | 1CB1C473-36B9-11D5-9548-00D0592D548C | 17065    | 13             | Saprotroph  | Wood Saprotroph      | Highly Probable   | Polyporoid | Brown Rot | NULL  | Gilbertson RL, Ryvarden L. 1987-1987. North American Polypores. Fungiflora, Oslo (ISBN: 978-0945345060) |
 | Amylosporus       | 1CB1C475-36B9-11D5-9548-00D0592D548C | 17072    | 13             | Saprotroph  | Wood Saprotroph      | Highly Probable   | Polyporoid | Brown Rot | NULL  | Gilbertson RL, Ryvarden L. 1987-1987. North American Polypores. Fungiflora, Oslo (ISBN: 978-0945345060) |
 | Anomoporia        | 1CB1C482-36B9-11D5-9548-00D0592D548C | 17080    | 13             | Saprotroph  | Wood Saprotroph      | Highly Probable   | Corticioid | Brown Rot | NULL  | Gilbertson RL, Ryvarden L. 1987-1987. North American Polypores. Fungiflora, Oslo (ISBN: 978-0945345060) |
 | Antrodia          | 1CB17DB2-36B9-11D5-9548-00D0592D548C | 17083    | 13             | Saprotroph  | Wood Saprotroph      | Highly Probable   | Corticioid | Brown Rot | NULL  | Gilbertson RL, Ryvarden L. 1987-1987. North American Polypores. Fungiflora, Oslo (ISBN: 978-0945345060) |
-| Aquascypha        | AF14A5C8-C759-41D9-8B08-9E6061DBB9A3 | 17092    | 13             | Saprotroph  | NULL                 | Probable          | NULL       | Brown Rot | NULL  | Tedersoo L, et al. 2014. Science 346:e1256688 ((<https://doi.org/10.1126/science.1256688>))             |
 
 The characters “`%`” and “`*`” can be used as wildcards. For instance,
 we can search for all fungi where the wood decay type is listed:
@@ -178,7 +179,7 @@ we can search for all fungi where the wood decay type is listed:
 ``` r
 allrotters <- funguild_query("* rot", "trait")
 nrow(allrotters)
-#> [1] 637
+#> [1] 656
 unique(allrotters$trait)
 #> [1] "White Rot"            "Soft Rot"             "Brown Rot; White Rot"
 #> [4] "Brown Rot"            "Brown Rot-White Rot"
