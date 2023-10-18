@@ -25,3 +25,9 @@ check_is_json <- function(response) {
   )
   response
 }
+
+make_taxkey <- function(x) {
+  out <- gsub("\\b[kpcofgs](:|__)", "", x)
+  out <- gsub("[_ ;,:]", "@", out)
+  paste0("@", out, "@")
+}

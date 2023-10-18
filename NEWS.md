@@ -13,6 +13,9 @@
   It also works with a locally cached database.
 * `funguild_assign()` now accepts Sintax ("`k:`", "`p:`"...) or Unite ("`k__`,
   "`p__`", ...) style taxonomy strings.
+* `funguild_assign()` now works in many cases when the *Taxonomy* column
+  contains only genus or species names. The most complete results will still be 
+  achieved when the whole taxonomy string is included.
 
 # FUNGuildR 0.2.0
 

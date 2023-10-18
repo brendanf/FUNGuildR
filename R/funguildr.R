@@ -135,10 +135,7 @@ funguild_assign <- function(otu_table, db = get_funguild_db(),
   }
   assertthat::assert_that(is.data.frame(otu_table),
                           tax_col %in% colnames(otu_table))
-  otu_table$taxkey <-
-    stringr::str_replace_all(otu_table[[tax_col]], "\\b[kpcofgs](:|__)", "") %>%
-    stringr::str_replace_all("[_ ;,:]", "@") %>%
-    paste0("@")
+  otu_table$taxkey <- make_taxkey(otu_table[[tax_col]])
   all_taxkey <- unique(otu_table$taxkey) %>% na.omit()
   `.` <- taxon <- taxkey <- searchkey <- taxonomicLevel <- NULL # to pass R CMD check
   db <- dplyr::mutate(
