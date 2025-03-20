@@ -1,4 +1,4 @@
-# FUNGuildR (development version)
+# FUNGuildR 0.3.0
 
 * NEMAGuild is (temporarily?) offline.
 * `funguild_assign()` and `get_funguild_db()` now return additional columns
@@ -16,6 +16,9 @@
 * `funguild_assign()` now works in many cases when the *Taxonomy* column
   contains only genus or species names. The most complete results will still be 
   achieved when the whole taxonomy string is included.
+* Fixed a bug where `funguild_assign()` incorrectly returned order- or
+  family-level guild annotations even when genus- or species-level annotations
+  were available.
 
 # FUNGuildR 0.2.0
 

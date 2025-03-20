@@ -148,7 +148,7 @@ funguild_assign <- function(otu_table, db = get_funguild_db(),
     ) %>%
     tidyr::unnest(cols = taxkey) %>%
     dplyr::group_by(taxkey) %>%
-    dplyr::arrange(dplyr::desc(taxonomicLevel)) %>%
+    dplyr::arrange(dplyr::desc(as.integer(taxonomicLevel))) %>%
     dplyr::summarize_at("searchkey", dplyr::first) %>%
     dplyr::ungroup() %>%
     dplyr::mutate_all(as.character) %>%

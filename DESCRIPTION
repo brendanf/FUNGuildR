@@ -1,7 +1,7 @@
 Package: FUNGuildR
 Type: Package
 Title: Look Up Guild Information for Fungi
-Version: 0.2.0.9000
+Version: 0.3.0
 Authors@R: c(person("Brendan", "Furneaux", role = c("aut", "trl", "cre"), email = "brendan.furneaux@gmail.com", comment = c(ORCID="0000-0003-3522-7363")), person("Zewei", "Song", role = "ctb", comment = "(Python version)"))
 Maintainer: Brendan Furneaux <brendan.furneaux@gmail.com>
 Description: A tool for assigning trait information based on matching to a
