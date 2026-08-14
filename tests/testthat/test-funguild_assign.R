@@ -41,6 +41,16 @@ test_that("direct assignment and stored db give same results", {
   expect_identical(assignment_online, assignment_local)
 })
 
+test_that("cpp and r engines agree on the full FUNGuild database", {
+  testthat::skip_if_offline(host = "www.stbates.org")
+  testthat::skip_if_not(file.exists(dbfile))
+  db <- readRDS(dbfile)
+  expect_identical(
+    funguild_assign(sample_fungi, db, engine = "r"),
+    funguild_assign(sample_fungi, db, engine = "cpp")
+  )
+})
+
 test_that("direct query and stored db give same results", {
   testthat::skip_if_offline(host = "www.mycoportal.org")
   result_online <- funguild_query("ectomycorrhizal*", "guild")
@@ -80,7 +90,11 @@ test_that("funguild_assign accepts a nonstandard taxonomy column", {
 
 test_that("funguild_assign accepts a nonstandard taxonomy column in a character", {
   expect_known_value(
-    funguild_assign(sample_fungi$Taxonomy, db = funguild_testdb, tax_col = "tax"),
+    funguild_assign(
+      sample_fungi$Taxonomy,
+      db = funguild_testdb,
+      tax_col = "tax"
+    ),
     file = "funguild_tax_col_char",
     update = FALSE
   )
@@ -100,7 +114,9 @@ reformat_sintax <- reformat %>%
   dplyr::summarize(Taxonomy = paste(rank, taxon, sep = ":", collapse = ",")) %>%
   dplyr::left_join(dplyr::select(sample_fungi, Common.Name, Species), .)
 reformat_unite <- reformat %>%
-  dplyr::summarize(Taxonomy = paste(rank, taxon, sep = "__", collapse = ";")) %>%
+  dplyr::summarize(
+    Taxonomy = paste(rank, taxon, sep = "__", collapse = ";")
+  ) %>%
   dplyr::left_join(dplyr::select(sample_fungi, Common.Name, Species), .)
 
 test_that("sintax-style taxonomy works", {

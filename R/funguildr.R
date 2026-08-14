@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#' @useDynLib FUNGuildR, .registration = TRUE
+#' @importFrom Rcpp evalCpp
 #' @importFrom magrittr "%>%"
 #' @importFrom magrittr "%<>%"
 #' @importFrom stats na.omit
@@ -114,6 +116,11 @@ get_nemaguild_db <- function(db = 'http://www.stbates.org/nemaguild_db.php') {
 #' [get_nemaguild_db()].
 #' If not supplied, the default database will be downloaded.
 #'
+#' @param engine Character string; `"cpp"` (default) uses the Rcpp
+#'     `unordered_map` matcher, `"r"` uses the original R implementation.
+#'     Both should return the same assignments; `"r"` is retained to check
+#'     correctness and for timing comparisons.
+#'
 #' @return A [`tibble::tibble`] containing all columns of
 #' `otu_table`, plus relevant columns of information from the FUNGuild or
 #' NEMAGuild database.
@@ -140,8 +147,10 @@ get_nemaguild_db <- function(db = 'http://www.stbates.org/nemaguild_db.php') {
 funguild_assign <- function(
   otu_table,
   db = get_funguild_db(),
-  tax_col = "Taxonomy"
+  tax_col = "Taxonomy",
+  engine = c("cpp", "r")
 ) {
+  engine <- match.arg(engine)
   if (is.character(otu_table)) {
     otu_table <- tibble::tibble(otu_table)
     names(otu_table) <- tax_col
@@ -152,33 +161,53 @@ funguild_assign <- function(
   )
   otu_table$taxkey <- make_taxkey(otu_table[[tax_col]])
   all_taxkey <- unique(otu_table$taxkey) %>% na.omit()
-  `.` <- taxon <- taxkey <- searchkey <- taxonomicLevel <- NULL # to pass R CMD check
+  # avoid NOTE in R CMD check
+  taxon <- taxkey <- searchkey <- taxonomicLevel <- NULL
   db <- dplyr::mutate(
     db,
     searchkey = paste0("@", stringr::str_replace(taxon, "[ _]", "@"), "@")
   )
+  matches <- switch(
+    engine,
+    cpp = match_taxkeys_cpp(
+      all_taxkey,
+      db$searchkey,
+      as.integer(db$taxonomicLevel)
+    ),
+    r = match_taxkeys_r(all_taxkey, db)
+  )
+  matches <- dplyr::mutate_all(matches, as.character)
+  dplyr::left_join(otu_table, matches, by = "taxkey") %>%
+    dplyr::left_join(db, by = "searchkey", suffix = c("", ".funguild")) %>%
+    dplyr::select(-taxkey, -searchkey)
+}
+
+match_taxkeys_r <- function(all_taxkey, db) {
+  taxonomicLevel <- searchkey <- taxkey <- NULL
   dplyr::select(db, taxonomicLevel, searchkey) %>%
     dplyr::mutate(
-      taxkey = purrr::map(searchkey, stringr::str_subset, string = all_taxkey)
+      taxkey = purrr::map(
+        searchkey,
+        stringr::str_subset,
+        string = all_taxkey
+      )
     ) %>%
     tidyr::unnest(cols = taxkey) %>%
     dplyr::group_by(taxkey) %>%
     dplyr::arrange(dplyr::desc(as.integer(taxonomicLevel))) %>%
     dplyr::summarize_at("searchkey", dplyr::first) %>%
-    dplyr::ungroup() %>%
-    dplyr::mutate_all(as.character) %>%
-    dplyr::left_join(otu_table, ., by = "taxkey") %>%
-    dplyr::left_join(db, by = "searchkey", suffix = c("", ".funguild")) %>%
-    dplyr::select(-taxkey, -searchkey)
+    dplyr::ungroup()
 }
+
 #' @rdname funguild_assign
 #' @export
 nemaguild_assign <- function(
   otu_table,
   db = get_nemaguild_db(),
-  tax_col = "Taxonomy"
+  tax_col = "Taxonomy",
+  engine = c("cpp", "r")
 ) {
-  funguild_assign(otu_table, db, tax_col)
+  funguild_assign(otu_table, db, tax_col, engine)
 }
 
 #' Return entries in the FUNGuild database which match search terms

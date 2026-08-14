@@ -1,3 +1,10 @@
+# FUNGuildR 0.4.0
+
+* `funguild_assign()` and `nemaguild_assign()` gain an `engine` argument.
+  The new default `"cpp"` is an optimized engine that results in a greater
+  than 100x speed improvement for large queries/databases. The `"r"` engine,
+  which matches previous versions, is retained for testing purposes.
+
 # FUNGuildR 0.3.0
 
 * NEMAGuild is (temporarily?) offline.

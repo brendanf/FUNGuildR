@@ -5,9 +5,19 @@
 \alias{nemaguild_assign}
 \title{Assign Guilds to Organisms Based on Taxonomic Classification}
 \usage{
-funguild_assign(otu_table, db = get_funguild_db(), tax_col = "Taxonomy")
+funguild_assign(
+  otu_table,
+  db = get_funguild_db(),
+  tax_col = "Taxonomy",
+  engine = c("cpp", "r")
+)
 
-nemaguild_assign(otu_table, db = get_nemaguild_db(), tax_col = "Taxonomy")
+nemaguild_assign(
+  otu_table,
+  db = get_nemaguild_db(),
+  tax_col = "Taxonomy",
+  engine = c("cpp", "r")
+)
 }
 \arguments{
 \item{otu_table}{A \code{data.frame} with a \code{character}
@@ -28,6 +38,11 @@ If not supplied, the default database will be downloaded.}
 
 \item{tax_col}{A \code{character} string, optionally giving an alternate
 column name in \code{otu_table} to use instead of \code{otu_table$Taxonomy}.}
+
+\item{engine}{Character string; \code{"cpp"} (default) uses the Rcpp
+\code{unordered_map} matcher, \code{"r"} uses the original R implementation.
+Both should return the same assignments; \code{"r"} is retained to check
+correctness and for timing comparisons.}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble::tibble}} containing all columns of

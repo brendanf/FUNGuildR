@@ -1,7 +1,7 @@
 Package: FUNGuildR
 Type: Package
 Title: Look Up Guild Information for Fungi
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: c(person("Brendan", "Furneaux", role = c("aut", "trl", "cre"), email = "brendan.furneaux@gmail.com", comment = c(ORCID="0000-0003-3522-7363")), person("Zewei", "Song", role = "ctb", comment = "(Python version)"))
 Maintainer: Brendan Furneaux <brendan.furneaux@gmail.com>
 Description: A tool for assigning trait information based on matching to a
@@ -19,19 +19,22 @@ Encoding: UTF-8
 LazyData: true
 Depends: R (>= 2.10)
 Imports:
-   dplyr (>= 0.7.5),
-   assertthat,
-   magrittr,
-   httr,
-   purrr (>= 0.2.3),
-   stringr,
-   jsonlite,
-   tibble,
-   tidyr
+    dplyr (>= 0.7.5),
+    assertthat,
+    magrittr,
+    httr,
+    purrr (>= 0.2.3),
+    stringr,
+    jsonlite,
+    tibble,
+    tidyr,
+    Rcpp
 Suggests:
     usethis,
     rgbif,
     covr,
     testthat (>= 2.1.0)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
+LinkingTo: 
+    Rcpp
