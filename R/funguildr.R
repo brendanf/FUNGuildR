@@ -39,40 +39,50 @@ NULL
 #' Schilling JS, Kennedy PG. 2016. *FUNGuild: An open annotation tool for
 #' parsing fungal community datasets by ecological guild*. Fungal Ecology
 #' 20:241–248.
-get_funguild_db <- function(db = 'http://www.stbates.org/funguild_db_2.php'){
+get_funguild_db <- function(db = 'http://www.stbates.org/funguild_db_2.php') {
   taxon <- NULL # pass R CMD check
-    httr::GET(url = db) %>%
-      httr::content(as = "text") %>%
-      stringr::str_split("\n") %>%
-      unlist %>%
-      magrittr::extract(7) %>%
-      stringr::str_replace("^\\[", "") %>%
-      stringr::str_replace("]</body>$", "") %>%
-      stringr::str_replace_all("\\} ?, ?\\{", "} \n {") %>%
-      stringr::str_split("\n") %>%
-      unlist %>%
-      purrr::map_dfr(
-        function(record) {
-          current_record <- jsonlite::fromJSON(record)
-          if (!is.null(current_record[["TrophicMode"]])) {
-            current_record$trophicMode <- current_record$TrophicMode
-          }
-          if (!is.null(current_record[["growthMorphology"]])) {
-            current_record$growthForm <- current_record$growthMorphology
-          }
-          purrr::flatten(current_record)
+  httr::GET(url = db) %>%
+    httr::content(as = "text") %>%
+    stringr::str_split("\n") %>%
+    unlist %>%
+    magrittr::extract(7) %>%
+    stringr::str_replace("^\\[", "") %>%
+    stringr::str_replace("]</body>$", "") %>%
+    stringr::str_replace_all("\\} ?, ?\\{", "} \n {") %>%
+    stringr::str_split("\n") %>%
+    unlist %>%
+    purrr::map_dfr(
+      function(record) {
+        current_record <- jsonlite::fromJSON(record)
+        if (!is.null(current_record[["TrophicMode"]])) {
+          current_record$trophicMode <- current_record$TrophicMode
         }
-      ) %>%
-      dplyr::select("taxon", "guid", "mbNumber", "taxonomicLevel", "trophicMode",
-                    "guild", "confidenceRanking", "growthForm", "trait", "notes",
-                    "citationSource")
-  }
+        if (!is.null(current_record[["growthMorphology"]])) {
+          current_record$growthForm <- current_record$growthMorphology
+        }
+        purrr::flatten(current_record)
+      }
+    ) %>%
+    dplyr::select(
+      "taxon",
+      "guid",
+      "mbNumber",
+      "taxonomicLevel",
+      "trophicMode",
+      "guild",
+      "confidenceRanking",
+      "growthForm",
+      "trait",
+      "notes",
+      "citationSource"
+    )
+}
 
 #' @rdname  get_funguild_db
 #' @export
 #' @importFrom magrittr "%>%"
 get_nemaguild_db <- function(db = 'http://www.stbates.org/nemaguild_db.php') {
-   get_funguild_db(db)
+  get_funguild_db(db)
 }
 
 #' Assign Guilds to Organisms Based on Taxonomic Classification
@@ -127,14 +137,19 @@ get_nemaguild_db <- function(db = 'http://www.stbates.org/nemaguild_db.php') {
 #' Schilling JS, Kennedy PG. 2016. *FUNGuild: An open annotation tool for
 #' parsing fungal community datasets by ecological guild*. Fungal Ecology
 #' 20:241–248.
-funguild_assign <- function(otu_table, db = get_funguild_db(),
-                            tax_col = "Taxonomy") {
+funguild_assign <- function(
+  otu_table,
+  db = get_funguild_db(),
+  tax_col = "Taxonomy"
+) {
   if (is.character(otu_table)) {
     otu_table <- tibble::tibble(otu_table)
     names(otu_table) <- tax_col
   }
-  assertthat::assert_that(is.data.frame(otu_table),
-                          tax_col %in% colnames(otu_table))
+  assertthat::assert_that(
+    is.data.frame(otu_table),
+    tax_col %in% colnames(otu_table)
+  )
   otu_table$taxkey <- make_taxkey(otu_table[[tax_col]])
   all_taxkey <- unique(otu_table$taxkey) %>% na.omit()
   `.` <- taxon <- taxkey <- searchkey <- taxonomicLevel <- NULL # to pass R CMD check
@@ -158,8 +173,11 @@ funguild_assign <- function(otu_table, db = get_funguild_db(),
 }
 #' @rdname funguild_assign
 #' @export
-nemaguild_assign <- function(otu_table, db = get_nemaguild_db(),
-                             tax_col = "Taxonomy") {
+nemaguild_assign <- function(
+  otu_table,
+  db = get_nemaguild_db(),
+  tax_col = "Taxonomy"
+) {
   funguild_assign(otu_table, db, tax_col)
 }
 
@@ -187,13 +205,22 @@ nemaguild_assign <- function(otu_table, db = get_nemaguild_db(),
 #' 20:241–248.
 funguild_query <- function(
   text,
-  field = c("taxon", "guid", "mbNumber", "trophicMode", "guild", "growthForm",
-            "trait"),
+  field = c(
+    "taxon",
+    "guid",
+    "mbNumber",
+    "trophicMode",
+    "guild",
+    "growthForm",
+    "trait"
+  ),
   db = "https://mycoportal.org/funguild/services/api/db_return.php"
 ) {
   assertthat::assert_that(assertthat::is.string(text))
   field <- match.arg(field)
-  if (is.data.frame(db)) return(funguild_query_local(text, field, db))
+  if (is.data.frame(db)) {
+    return(funguild_query_local(text, field, db))
+  }
   assertthat::assert_that(assertthat::is.string(db))
   # if (file.exists(db)) return(funguild_query_file(text, field, db))
   httr::GET(db, query = list(qField = field, qText = text)) %>%
