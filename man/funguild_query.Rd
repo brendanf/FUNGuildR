@@ -28,6 +28,11 @@ which match the query.
 \description{
 Return entries in the FUNGuild database which match search terms
 }
+\details{
+When \code{db} is a URL, the FUNGuild web API is queried. If that service is
+unavailable, an error is thrown describing how to download the database
+with \code{\link[=get_funguild_db]{get_funguild_db()}} and pass the result as \code{db}.
+}
 \examples{
 
 funguild_query("Symbiotroph", "trophicMode", funguild_testdb)

@@ -52,7 +52,7 @@ test_that("cpp and r engines agree on the full FUNGuild database", {
 })
 
 test_that("direct query and stored db give same results", {
-  testthat::skip_if_offline(host = "www.mycoportal.org")
+  skip_if_funguild_api_unavailable()
   result_online <- funguild_query("ectomycorrhizal*", "guild")
   testthat::skip_if_not(file.exists(dbfile))
   db <- readRDS(dbfile)

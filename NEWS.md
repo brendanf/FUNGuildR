@@ -1,3 +1,10 @@
+# FUNGuildR 0.4.1
+
+* The online FUNGuild query API previously hosted at mycoportal.org appears
+  to have been taken down. `funguild_query()` now gives an informative error
+  when it cannot contact the API, and suggests a local-database workaround
+  via `get_funguild_db()`.
+
 # FUNGuildR 0.4.0
 
 * `funguild_assign()` and `nemaguild_assign()` gain an `engine` argument.

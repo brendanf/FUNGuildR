@@ -221,6 +221,11 @@ nemaguild_assign <- function(
 #'     web API, or a `data.frame` containing a cached copy of the database,
 #'     as returned by [get_funguild_db()].
 #'
+#' @details
+#' When `db` is a URL, the FUNGuild web API is queried. If that service is
+#' unavailable, an error is thrown describing how to download the database
+#' with [get_funguild_db()] and pass the result as `db`.
+#'
 #' @return A [`tibble::tibble`] containing all the entried from the database
 #'     which match the query.
 #' @export
@@ -252,8 +257,19 @@ funguild_query <- function(
   }
   assertthat::assert_that(assertthat::is.string(db))
   # if (file.exists(db)) return(funguild_query_file(text, field, db))
-  httr::GET(db, query = list(qField = field, qText = text)) %>%
-    check_is_json() %>%
+  resp <- tryCatch(
+    httr::GET(db, query = list(qField = field, qText = text)),
+    error = function(e) e
+  )
+  if (inherits(resp, "error")) {
+    stop_funguild_api_unavailable(
+      db,
+      reason = conditionMessage(resp),
+      text = text,
+      field = field
+    )
+  }
+  check_funguild_api_response(resp, text, field, url = db) %>%
     httr::content() %>%
     purrr::map_dfr(tibble::as_tibble)
 }
